@@ -26,7 +26,6 @@ class ShoppingList extends Model
 
     }
 
-
     /**
      * A ShoppingList has many Recipes
      *

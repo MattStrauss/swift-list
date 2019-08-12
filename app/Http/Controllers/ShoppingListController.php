@@ -17,6 +17,7 @@ class ShoppingListController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->authorizeResource(ShoppingList::class,'shopping_list');
     }
 
 
@@ -60,9 +61,9 @@ class ShoppingListController extends Controller
      *
      * @return void
      */
-    public function show($id)
+    public function show(ShoppingList $shopping_list)
     {
-        $shopping_list = ShoppingList::where('id', $id)->with(['recipes.category', 'recipes.items', 'recipes.items.aisle', 'items.aisle'])->first();
+        $shopping_list = ShoppingList::where('id', $shopping_list->id)->with(['recipes.category', 'recipes.items', 'recipes.items.aisle', 'items.aisle'])->first();
 
         $listItems = $shopping_list->items;
 
@@ -79,8 +80,7 @@ class ShoppingListController extends Controller
             $aisle->forget($aisleDuplicates->keys()->toArray());
 
             foreach ($aisleDuplicates as $duplicate) {
-//                $aisle[array_search($duplicate, array_column($aisle->toArray(), 'name'))]->name = $duplicate . ' ('. (1 + $occurrenceCounts[$duplicate]).')';
-                $aisle[$aisle->searchMultidimensional($duplicate, 'name')]->name = $duplicate . ' ('. (1 + $occurrenceCounts[$duplicate]).')';
+                $aisle[array_search($duplicate, array_column($aisle->toArray(), 'name'))]->name = $duplicate . ' ('. (1 + $occurrenceCounts[$duplicate]).')';
             }
         });
 

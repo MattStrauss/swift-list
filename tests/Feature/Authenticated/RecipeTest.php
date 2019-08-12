@@ -10,7 +10,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class RecipesTest extends TestCase
+class RecipeTest extends TestCase
 {
     use RefreshDatabase;
     use withFaker;

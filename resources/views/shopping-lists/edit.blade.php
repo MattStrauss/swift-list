@@ -7,12 +7,12 @@
                 <div class="card">
                     <shopping-list-form
                         :initial-list='@json($shopping_list)'
-                        :initial-included-recipes='@json([])'
+                        :initial-included-recipes='@json($shopping_list->recipes)'
                         :available-recipes='@json($recipes)'
-                        :initial-included-items='@json([])'
+                        :initial-included-items='@json($shopping_list->items)'
                         :available-items='@json($items)'
                         :aisles='@json($aisles)'
-                        :initial-action='@json('Create')'
+                        :initial-action='@json('Update')'
                         :previous-url = '@json(URL::previous())'>
                     </shopping-list-form>
                 </div>
@@ -20,4 +20,3 @@
         </div>
     </div>
 @endsection
-

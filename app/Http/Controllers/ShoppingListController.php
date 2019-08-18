@@ -47,9 +47,9 @@ class ShoppingListController extends Controller
         $recipes = $user->recipes()->with(['category'])->get();
         $items = $user->items()->with(['aisle'])->get();
         $aisles = Aisle::all();
-        $list = ['id' => '', 'name' => Carbon::now()->format("l, M jS"). " List"];
+        $shopping_list = ['id' => '', 'name' => Carbon::now()->format("l, M jS"). " List"];
 
-        return view('shopping-lists.create', compact('recipes', 'items', 'aisles', 'list'));
+        return view('shopping-lists.create', compact('recipes', 'items', 'aisles', 'shopping_list'));
     }
 
     /**
@@ -66,18 +66,18 @@ class ShoppingListController extends Controller
             'name' => 'required|string',
         ]);
 
-        $list = new ShoppingList();
-        $list->name = $request->input('name');
-        $list->user()->associate(Auth::user()->id);
-        $list->save();
+        $shopping_list = new ShoppingList();
+        $shopping_list->name = $request->input('name');
+        $shopping_list->user()->associate(Auth::user()->id);
+        $shopping_list->save();
 
         $items = collect($request->input('items'))->pluck('id');
-        $list->items()->sync($items);
+        $shopping_list->items()->sync($items);
 
         $recipes = collect($request->input('recipes'))->pluck('id');
-        $list->recipes()->sync($recipes);
+        $shopping_list->recipes()->sync($recipes);
 
-        return response()->json($list, 200);
+        return response()->json($shopping_list, 200);
 
     }
 
@@ -117,12 +117,19 @@ class ShoppingListController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  ShoppingList  $shopping_list
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ShoppingList $shopping_list)
     {
-        //
+        $user = Auth::user();
+
+        $recipes = $user->recipes()->with(['category'])->get();
+        $items = $user->items()->with(['aisle'])->get();
+        $aisles = Aisle::all();
+
+        return view('shopping-lists.edit', compact('recipes', 'items', 'aisles', 'shopping_list'));
     }
 
     /**
@@ -154,11 +161,23 @@ class ShoppingListController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  ShoppingList  $shopping_list
+     *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(ShoppingList $shopping_list)
     {
-        //
+        if (! $shopping_list->delete()) {
+
+            $error = ['error' => 'Error deleting shopping list, please try again.'];
+
+            return response()->json($error, 422);
+        }
+
+        session()->flash('status', ['type' => 'primary', 'message' => 'Shopping List successfully deleted!'] );
+        $redirect =  ['redirect' => route('shopping-lists.index')];
+
+        return response()->json($redirect, 200);
     }
 }

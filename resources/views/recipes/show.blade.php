@@ -33,7 +33,7 @@
                                 <span class="badge badge-light badge-pill">{{ count($items) }}</span>
                             </li>
 
-                            @if(! $items->isEmpty())
+                            @if($items->isNotEmpty())
 
                                 @foreach($items as $item)
                                     <li class="list-group-item">{{ $item->name }}  <small class="text-muted">({{ $item->aisle->name }})</small></li>

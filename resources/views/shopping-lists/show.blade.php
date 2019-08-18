@@ -5,7 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ $shopping_list->name }}</div>
+                    <div class="card-header">{{ $shopping_list->name }}
+                        <a href="{{route('shopping-lists.edit', $shopping_list->id)}}" class="btn btn-sm btn-outline-secondary float-right ml-2"> <i class="fas fa-edit"></i> Edit List</a>
+                        <button @click="modalConfirmDeleteOpen = true" type="button" class="btn btn-sm btn-outline-danger float-right"> <i class="fas fa-trash-alt"></i> Delete List</button>
+                    </div>
 
                     <div class="card-body">
                         <h4> Recipes <small><small>({{ $shopping_list->recipes->count() }})</small></small></h4>
@@ -46,6 +49,12 @@
                     </div>
                 </div>
             </div>
+            <modal-confirm-delete :model_type= '@json("shopping-lists")' :model_id= '@json($shopping_list->id)' v-show="modalConfirmDeleteOpen" @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
+
+                <template v-slot:title> Confirm Delete </template>
+                <template v-slot:body> Are you sure that you want to delete this shopping list? This action <strong>cannot be undone</strong>.  </template>
+
+            </modal-confirm-delete>
         </div>
     </div>
 @endsection

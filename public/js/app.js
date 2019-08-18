@@ -40161,20 +40161,26 @@ var render = function() {
       ? _c("div", { staticClass: "card-header" }, [
           _vm._v("Create New Shopping List\n        "),
           _vm.action !== "Create"
-            ? _c("span", { staticClass: "float-right" }, [
-                _c("a", { attrs: { href: "/shopping-lists/" + _vm.list.id } }, [
-                  _vm._v("View List ")
-                ])
-              ])
+            ? _c(
+                "a",
+                {
+                  staticClass: "btn btn-sm btn-outline-secondary float-right",
+                  attrs: { href: "/shopping-lists/" + _vm.list.id }
+                },
+                [_c("i", { staticClass: "fas fa-eye" }), _vm._v(" View List")]
+              )
             : _vm._e()
         ])
       : _c("div", { staticClass: "card-header" }, [
           _vm._v(" " + _vm._s(_vm.list.name) + "\n        "),
-          _c("span", { staticClass: "float-right" }, [
-            _c("a", { attrs: { href: "/shopping-lists/" + _vm.list.id } }, [
-              _vm._v("View List ")
-            ])
-          ])
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-sm btn-outline-secondary float-right",
+              attrs: { href: "/shopping-lists/" + _vm.list.id }
+            },
+            [_c("i", { staticClass: "fas fa-eye" }), _vm._v(" View List")]
+          )
         ]),
     _vm._v(" "),
     _vm.success

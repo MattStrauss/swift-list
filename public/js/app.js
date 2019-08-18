@@ -2607,18 +2607,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['action', 'previousUrl', 'initialListName', 'aisles', 'availableRecipes', 'initialIncludedRecipes', 'availableItems', 'initialIncludedItems'],
+  props: ['initialAction', 'previousUrl', 'initialList', 'aisles', 'availableRecipes', 'initialIncludedRecipes', 'availableItems', 'initialIncludedItems'],
   data: function data() {
     return {
       includedRecipes: this.initialIncludedRecipes,
       includedItems: this.initialIncludedItems,
-      listName: this.initialListName,
-      processing: false
+      list: this.initialList,
+      action: this.initialAction,
+      processing: false,
+      autoSaved: false,
+      success: false,
+      errors: {}
     };
   },
   methods: {
-    submit: function submit() {//
+    submit: function submit() {
+      var _this = this;
+
+      this.processing = true;
+      this.errors = {};
+      this.list['recipes'] = this.includedRecipes;
+      this.list['items'] = this.includedItems;
+      var uri = "/shopping-lists/";
+      var method = "post";
+
+      if (this.action === 'Update') {
+        uri = '/shopping-lists/' + this.list.id;
+        method = "put";
+      }
+
+      axios({
+        method: method,
+        url: uri,
+        data: this.list
+      }).then(function (response) {
+        _this.list = response.data;
+        _this.processing = false;
+        _this.action = "Update";
+        _this.success = true;
+        setTimeout(function () {
+          _this.success = false;
+        }, 2000);
+      })["catch"](function (error) {
+        if (error.response.status === 422) {
+          _this.processing = false;
+          _this.errors = error.response.data.errors || {};
+        }
+      });
     }
   }
 });
@@ -40110,11 +40159,51 @@ var render = function() {
   return _c("div", [
     _vm.action === "Create"
       ? _c("div", { staticClass: "card-header" }, [
-          _vm._v("Create New Shopping List")
+          _vm._v("Create New Shopping List\n        "),
+          _vm.action !== "Create"
+            ? _c("span", { staticClass: "float-right" }, [
+                _c("a", { attrs: { href: "/shopping-lists/" + _vm.list.id } }, [
+                  _vm._v("View List ")
+                ])
+              ])
+            : _vm._e()
         ])
       : _c("div", { staticClass: "card-header" }, [
-          _vm._v(" " + _vm._s(_vm.listName) + " ")
+          _vm._v(" " + _vm._s(_vm.list.name) + "\n        "),
+          _c("span", { staticClass: "float-right" }, [
+            _c("a", { attrs: { href: "/shopping-lists/" + _vm.list.id } }, [
+              _vm._v("View List ")
+            ])
+          ])
         ]),
+    _vm._v(" "),
+    _vm.success
+      ? _c(
+          "div",
+          {
+            staticClass: "alert alert-primary fade show",
+            staticStyle: { margin: "2%" },
+            attrs: { role: "alert" }
+          },
+          [
+            _c("strong", [_vm._v("Saved!")]),
+            _vm._v(" Your changes have been saved.\n        "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: { type: "button", "aria-label": "Close" },
+                on: {
+                  click: function($event) {
+                    _vm.success = false
+                  }
+                }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
       _c(
@@ -40137,22 +40226,28 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.listName,
-                  expression: "listName"
+                  value: _vm.list.name,
+                  expression: "list.name"
                 }
               ],
               staticClass: "form-control",
               attrs: { type: "text", name: "name", id: "name" },
-              domProps: { value: _vm.listName },
+              domProps: { value: _vm.list.name },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.listName = $event.target.value
+                  _vm.$set(_vm.list, "name", $event.target.value)
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.errors && _vm.errors.name
+              ? _c("div", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errors.name[0]))
+                ])
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c("recipes-section", {
@@ -40177,6 +40272,27 @@ var render = function() {
           _c("div", { staticClass: "clearfix" }),
           _vm._v(" "),
           _c("hr"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.list.id,
+                expression: "list.id"
+              }
+            ],
+            attrs: { type: "hidden", name: "item_id", value: "" },
+            domProps: { value: _vm.list.id },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.list, "id", $event.target.value)
+              }
+            }
+          }),
           _vm._v(" "),
           _c("div", { staticClass: "form-buttons" }, [
             _c(

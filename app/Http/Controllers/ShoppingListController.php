@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Aisle;
 use App\ShoppingList;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -41,22 +42,43 @@ class ShoppingListController extends Controller
      */
     public function create()
     {
-        $recipes = Auth::user()->recipes()->with(['category'])->get();
-        $items = Auth::user()->items()->with(['aisle'])->get();
-        $aisles = Aisle::all();
+        $user = Auth::user();
 
-        return view('shopping-lists.create', compact('recipes', 'items', 'aisles'));
+        $recipes = $user->recipes()->with(['category'])->get();
+        $items = $user->items()->with(['aisle'])->get();
+        $aisles = Aisle::all();
+        $list = ['id' => '', 'name' => Carbon::now()->format("l, M jS"). " List"];
+
+        return view('shopping-lists.create', compact('recipes', 'items', 'aisles', 'list'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return void
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+
+        $list = new ShoppingList();
+        $list->name = $request->input('name');
+        $list->user()->associate(Auth::user()->id);
+        $list->save();
+
+        $items = collect($request->input('items'))->pluck('id');
+        $list->items()->sync($items);
+
+        $recipes = collect($request->input('recipes'))->pluck('id');
+        $list->recipes()->sync($recipes);
+
+        return response()->json($list, 200);
+
     }
 
     /**
@@ -107,12 +129,26 @@ class ShoppingListController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  ShoppingList  $shopping_list
+     *
+     * @return void
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ShoppingList $shopping_list)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+
+        $shopping_list->update($request->all());
+
+        $items = collect($request->input('items'))->pluck('id');
+        $shopping_list->items()->sync($items);
+
+        $recipes = collect($request->input('recipes'))->pluck('id');
+        $shopping_list->recipes()->sync($recipes);
+
+        return response()->json($shopping_list, 200);
     }
 
     /**

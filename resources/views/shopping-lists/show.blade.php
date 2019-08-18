@@ -8,15 +8,15 @@
                     <div class="card-header">{{ $shopping_list->name }}</div>
 
                     <div class="card-body">
-                        <h4> Recipes</h4>
-                        <div class="d-flex flex-wrap bd-highlight">
+                        <h4> Recipes <small><small>({{ $shopping_list->recipes->count() }})</small></small></h4>
+                        <ul class="items">
                             @foreach($shopping_list->recipes as $recipe)
 
-                                <div class="p-2 bd-highlight">{{$recipe->name}}</div>
+                                <a href="/recipes/{{$recipe->id}}"><li class="item">{{$recipe->name}}</li></a>
 
                             @endforeach
 
-                        </div>
+                        </ul>
                         <div class="clearfix"></div> <br>
 
                         <h4> List</h4>

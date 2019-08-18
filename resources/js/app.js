@@ -19,10 +19,14 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('recipe-form', require('./components/RecipeForm.vue').default);
-Vue.component('modal-confirm-delete', require('./components/ModalConfirmDelete.vue').default);
-Vue.component('modal-item', require('./components/ModalItem.vue').default);
-Vue.component('recipe-listing', require('./components/RecipeListing.vue').default);
+Vue.component('recipe-form', require('./components/recipes/RecipeForm.vue').default);
+Vue.component('modal-confirm-delete', require('./components/global/ModalConfirmDelete.vue').default);
+Vue.component('modal-item', require('./components/items/ModalItem.vue').default);
+Vue.component('recipe-listing', require('./components/recipes/RecipeListing.vue').default);
+Vue.component('shopping-list-form', require('./components/shopping_lists/ShoppingListForm.vue').default);
+Vue.component('auto-complete', require('./components/global/AutoComplete.vue').default);
+Vue.component('items-section', require('./components/shopping_lists/ItemsSection.vue').default);
+Vue.component('recipes-section', require('./components/shopping_lists/RecipesSection.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

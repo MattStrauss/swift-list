@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aisle;
 use App\ShoppingList;
 use Illuminate\Http\Request;
 use Auth;
@@ -40,7 +41,11 @@ class ShoppingListController extends Controller
      */
     public function create()
     {
-        //
+        $recipes = Auth::user()->recipes()->with(['category'])->get();
+        $items = Auth::user()->items()->with(['aisle'])->get();
+        $aisles = Aisle::all();
+
+        return view('shopping-lists.create', compact('recipes', 'items', 'aisles'));
     }
 
     /**
@@ -57,13 +62,13 @@ class ShoppingListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $id
+     * @param  ShoppingList  $shopping_list
      *
      * @return void
      */
     public function show(ShoppingList $shopping_list)
     {
-        $shopping_list = ShoppingList::where('id', $shopping_list->id)->with(['recipes.category', 'recipes.items', 'recipes.items.aisle', 'items.aisle'])->first();
+        $shopping_list->with(['recipes.category', 'recipes.items.aisle', 'items.aisle'])->get();
 
         $listItems = $shopping_list->items;
 

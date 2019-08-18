@@ -53,7 +53,7 @@
             <div class="form-buttons">
                 <a :href="previousUrl" class="btn btn-outline-secondary float-left">Back</a>
 
-                <button type="submit" @click="submit('flashSuccess')" :disabled="processing" class="btn btn-outline-primary float-right">
+                <button type="submit" @submit="submit('flashSuccess')" :disabled="processing" class="btn btn-outline-primary float-right">
                     <span v-show="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{action}}
                 </button>
@@ -103,7 +103,8 @@
                     if (this.action === 'Add') {
                         window.location = response.data.redirect;
                     } else {
-                        this.success = (flashSuccess);
+                        this.success = flashSuccess;
+                        setTimeout(() => {this.success = false;}, 2000);
                     }
                 }).catch(error => {
                     if (error.response.status === 422) {

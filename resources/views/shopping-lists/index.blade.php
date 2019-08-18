@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Shopping Lists
                         <a href="{{route('shopping-lists.create')}}">
-                            <button type="button" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-fs fa-plus-circle"></i> New List</button>
+                            <a href="{{route('shopping-lists.create')}}" type="button" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-fs fa-plus-circle"></i> New List</a>
                         </a>
                     </div>
 

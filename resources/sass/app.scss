@@ -10,7 +10,55 @@
 // Font Awesome
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
-.bd-highlight {
-    background-color: #f8f9fa;
-    border: 1px solid #fff;
+.items {
+    list-style: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
 }
+
+.items, .item-delete-able  li {
+    float: left;
+}
+
+.item,.item-delete-able {
+    background: #eee;
+    border-radius: 25px;
+    color: #999;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 10px 0 10px;
+    position: relative;
+    margin: 0 10px 10px 0;
+    text-decoration: none;
+    -webkit-transition: color 0.2s;
+}
+
+.item:hover {
+    background-color: #3490dc;
+    color: white;
+}
+
+.item-delete-able {
+    pointer-events: none;
+    cursor: none;
+}
+
+.item-delete-able:hover {
+    color: #e3342f;
+}
+
+.item-delete-able > i {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+* > .fa.fa-hover-show,
+*:hover > .fa.fa-hover-hidden {
+    display: none;
+}
+*:hover > .fa.fa-hover-show {
+    display: inline-block;
+}
+

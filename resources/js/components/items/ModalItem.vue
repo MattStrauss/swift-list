@@ -86,6 +86,7 @@
                 }).then(response => {
                     this.processing = false;
                     this.success = true;
+                    setTimeout(() => {this.success = false;}, 2000);
                     if (this.action === "Add") {
                         this.clearItemDetails(false);
                         Event.$emit('item-added', response.data);

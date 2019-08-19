@@ -2249,6 +2249,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['initialRecipe', 'initialItems', 'categories', 'previousUrl', 'action'],
   data: function data() {
@@ -39596,66 +39597,74 @@ var render = function() {
           _c(
             "ul",
             { staticClass: "list-group list-group-flush" },
-            _vm._l(_vm.items, function(item, index) {
-              return _c(
-                "li",
-                { key: item.id, staticClass: "list-group-item" },
-                [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "cursor-pointer",
-                      attrs: {
-                        id: "item_" + index,
-                        "data-toggle": "tooltip",
-                        title: "Remove ingredient"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.removeItem(index)
-                        }
-                      }
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "fas fa-minus-circle fa-fw text-danger"
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "cursor-pointer",
-                      attrs: {
-                        id: "item_" + index,
-                        "data-toggle": "tooltip",
-                        title: "Edit ingredient"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.createOrEditItem(item)
-                        }
-                      }
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "fas fa-pen-square fa-fw text-secondary"
-                      })
-                    ]
-                  ),
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(item.name) +
-                      "\n                    "
-                  ),
-                  _c("small", { staticClass: "text-muted" }, [
-                    _vm._v("(" + _vm._s(item.aisle.name) + ")")
+            [
+              _vm.items.length < 1
+                ? _c("li", { staticClass: "list-group-item" }, [
+                    _vm._v(" No ingredients... ")
                   ])
-                ]
-              )
-            }),
-            0
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.items, function(item, index) {
+                return _c(
+                  "li",
+                  { key: item.id, staticClass: "list-group-item" },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "cursor-pointer",
+                        attrs: {
+                          id: "item_" + index,
+                          "data-toggle": "tooltip",
+                          title: "Remove ingredient"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.removeItem(index)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "fas fa-minus-circle fa-fw text-danger"
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "cursor-pointer",
+                        attrs: {
+                          id: "item_" + index,
+                          "data-toggle": "tooltip",
+                          title: "Edit ingredient"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.createOrEditItem(item)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "fas fa-pen-square fa-fw text-secondary"
+                        })
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(item.name) +
+                        "\n                    "
+                    ),
+                    _c("small", { staticClass: "text-muted" }, [
+                      _vm._v("(" + _vm._s(item.aisle.name) + ")")
+                    ])
+                  ]
+                )
+              })
+            ],
+            2
           )
         ]),
         _vm._v(" "),

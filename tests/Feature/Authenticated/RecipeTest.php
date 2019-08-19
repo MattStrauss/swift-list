@@ -13,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class RecipeTest extends TestCase
 {
     use RefreshDatabase;
-    use withFaker;
 
     /** @test */
     public function userCanAccessRecipeIndex()
@@ -247,6 +246,38 @@ class RecipeTest extends TestCase
         $response->assertOk();
         $this->assertDatabaseMissing('recipes',
             ['user_id' => $user->id, 'id' => $recipe->id]);
+    }
+
+    /** @test */
+    public function userCanDeleteTheirOwnRecipeAndItCascadeDeletesCorrectly()
+    {
+        $user = factory(User::class)->create();
+        $recipe = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $item1 = factory(Item::class)->create(['user_id' => $user->id]);
+        $item2 = factory(Item::class)->create(['user_id' => $user->id]);
+        $item3 = factory(Item::class)->create(['user_id' => $user->id]);
+        $originalItems = collect([$item1, $item2, $item3]);
+        $recipe->items()->sync($originalItems->pluck('id'));
+
+        $recipe2 = factory(Recipe::class)->create(['user_id' => $user->id]);
+        $item4 = factory(Item::class)->create(['user_id' => $user->id]);
+        $item5 = factory(Item::class)->create(['user_id' => $user->id]);
+        $item6 = factory(Item::class)->create(['user_id' => $user->id]);
+        $items = collect([$item4, $item5, $item6]);
+        $recipe2->items()->sync($items->pluck('id'));
+
+        $response = $this->actingAs($user)->delete('/recipes/'. $recipe->id);
+
+        $response->assertOk();
+        $this->assertDatabaseMissing('recipes', ['user_id' => $user->id, 'id' => $recipe->id]);
+        $this->assertDatabaseMissing('item_recipe', ['item_id' => $item1->id, 'recipe_id' => $recipe->id]);
+        $this->assertDatabaseMissing('item_recipe', ['item_id' => $item2->id, 'recipe_id' => $recipe->id]);
+        $this->assertDatabaseMissing('item_recipe', ['item_id' => $item3->id, 'recipe_id' => $recipe->id]);
+
+        $this->assertDatabaseHas('recipes', ['user_id' => $user->id, 'id' => $recipe2->id]);
+        $this->assertDatabaseHas('item_recipe', ['item_id' => $item4->id, 'recipe_id' => $recipe2->id]);
+        $this->assertDatabaseHas('item_recipe', ['item_id' => $item5->id, 'recipe_id' => $recipe2->id]);
+        $this->assertDatabaseHas('item_recipe', ['item_id' => $item6->id, 'recipe_id' => $recipe2->id]);
     }
 
     /** @test */

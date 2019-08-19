@@ -35,6 +35,7 @@
                 </a>
                 </label>
                 <ul class="list-group list-group-flush">
+                    <li v-if="items.length < 1" class="list-group-item"> No ingredients... </li>
                     <li v-for="(item, index) in items" :key="item.id" class="list-group-item">
                         <a :id="'item_' + index" data-toggle="tooltip" title="Remove ingredient" class="cursor-pointer" @click="removeItem(index)">
                             <i class="fas fa-minus-circle fa-fw text-danger"></i>

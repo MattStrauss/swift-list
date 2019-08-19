@@ -46,7 +46,9 @@ class RecipeController extends Controller
 
         $categories = Category::all();
 
-        return view('recipes.create', compact('categories', 'aisles'));
+        $availableItems = Auth::user()->items()->with(['aisle'])->get();
+
+        return view('recipes.create', compact('categories', 'aisles', 'availableItems'));
     }
 
     /**
@@ -74,7 +76,7 @@ class RecipeController extends Controller
         session()->flash('status', ['type' => 'primary', 'message' => 'Recipe successfully created'] );
         $redirect =  ['redirect' => route('recipes.index')];
 
-        return response()->json($redirect, 200);
+        return response()->json($recipe, 200);
     }
 
     /**
@@ -106,7 +108,9 @@ class RecipeController extends Controller
 
         $categories = Category::all();
 
-        return view('recipes.edit', compact('recipe', 'items', 'categories', 'aisles'));
+        $availableItems = Auth::user()->items()->with(['aisle'])->get();
+
+        return view('recipes.edit', compact('recipe', 'items', 'categories', 'aisles', 'availableItems'));
     }
 
     /**
@@ -131,7 +135,7 @@ class RecipeController extends Controller
         $items = collect($request->input('items'))->pluck('id');
         $recipe->items()->sync($items);
 
-        return response()->json(null, 200);
+        return response()->json($recipe, 200);
     }
 
     /**

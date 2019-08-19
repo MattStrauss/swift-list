@@ -6,8 +6,8 @@
             <div class="col-md-8">
                 <div class="card">
 
-                    <recipe-form :initial-recipe='{}' :initial-items='[]' :categories = '@json($categories)' :previous-url = '@json(URL::previous())' :action='@json('Add')'
-                                 @open-item-modal="modalItemOpen = true">
+                    <recipe-form :initial-recipe='{}' :initial-items='[]' :available-items='@json($availableItems)' :categories='@json($categories)'
+                                 :previous-url= '@json(URL::previous())' :initial-action='@json('Create')' @open-item-modal="modalItemOpen = true">
 
                     </recipe-form>
 

@@ -34,7 +34,7 @@ class RecipeTest extends TestCase
         $response = $this->actingAs($user)->get('/recipes/'. $recipe->id);
 
         $response->assertOk();
-        $response->assertViewHas('recipe');
+        $response->assertViewHas(['recipe', 'items']);
     }
 
     /** @test */
@@ -57,6 +57,7 @@ class RecipeTest extends TestCase
         $response = $this->actingAs($user)->get('/recipes/create');
 
         $response->assertOk();
+        $response->assertViewHas(['categories', 'aisles', 'availableItems']);
     }
 
     /** @test */
@@ -120,6 +121,7 @@ class RecipeTest extends TestCase
         $response = $this->actingAs($user)->get('/recipes/'. $recipe->id. '/edit');
 
         $response->assertOk();
+        $response->assertViewHas(['recipe', 'items', 'categories', 'aisles', 'availableItems']);
     }
 
     /** @test */

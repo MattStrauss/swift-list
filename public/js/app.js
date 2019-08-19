@@ -2250,15 +2250,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialRecipe', 'initialItems', 'categories', 'previousUrl', 'action'],
+  props: ['initialRecipe', 'initialItems', 'availableItems', 'categories', 'previousUrl', 'initialAction'],
   data: function data() {
     return {
       recipe: this.initialRecipe,
       items: this.initialItems,
       errors: {},
       processing: false,
-      success: false
+      success: false,
+      action: this.initialAction
     };
   },
   created: function created() {
@@ -2289,16 +2296,13 @@ __webpack_require__.r(__webpack_exports__);
         url: uri,
         data: this.recipe
       }).then(function (response) {
+        _this.recipe = response.data;
         _this.processing = false;
-
-        if (_this.action === 'Add') {
-          window.location = response.data.redirect;
-        } else {
-          _this.success = flashSuccess;
-          setTimeout(function () {
-            _this.success = false;
-          }, 2000);
-        }
+        _this.action = "Update";
+        _this.success = flashSuccess;
+        setTimeout(function () {
+          _this.success = false;
+        }, 2000);
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this.processing = false;
@@ -2306,14 +2310,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    updateRecipe: function updateRecipe() {
-      if (this.action === "Update") {
-        this.submit();
-      }
-    },
     addItem: function addItem(item) {
       this.items.push(item);
-      this.updateRecipe();
+      this.submit();
     },
     editItem: function editItem(item) {
       var itemToRemove = this.items.find(function (e) {
@@ -2326,7 +2325,7 @@ __webpack_require__.r(__webpack_exports__);
       $('#item_' + index).tooltip('dispose'); // have to figure out non-jQuery/Vue way to do this...
 
       this.$delete(this.items, index);
-      this.updateRecipe();
+      this.submit();
     },
     createOrEditItem: function createOrEditItem(item) {
       this.$emit('open-item-modal');
@@ -39413,7 +39412,17 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "card-header" }, [
-      _vm._v(_vm._s(_vm.recipe.name))
+      _vm._v(_vm._s(_vm.recipe.name) + "\n    "),
+      _vm.action !== "Create"
+        ? _c(
+            "a",
+            {
+              staticClass: "btn btn-sm btn-outline-secondary float-right",
+              attrs: { href: "/recipes/" + _vm.recipe.id }
+            },
+            [_c("i", { staticClass: "fas fa-eye" }), _vm._v(" View Recipe")]
+          )
+        : _vm._e()
     ]),
     _vm._v(" "),
     _vm.success
@@ -39580,103 +39589,140 @@ var render = function() {
             : _vm._e()
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [
-            _vm._v("\n                Ingredients "),
-            _c(
-              "a",
-              {
-                staticClass: "cursor-pointer",
-                attrs: { "data-toggle": "tooltip", title: "Add ingredient" },
-                on: {
-                  click: function($event) {
-                    return _vm.createOrEditItem()
+        _c(
+          "div",
+          { staticClass: "form-group" },
+          [
+            _c("label", [
+              _vm._v("\n                Ingredients "),
+              _c(
+                "a",
+                {
+                  staticClass: "cursor-pointer",
+                  attrs: { "data-toggle": "tooltip", title: "Add ingredient" },
+                  on: {
+                    click: function($event) {
+                      return _vm.createOrEditItem()
+                    }
                   }
-                }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-plus-circle fa-fw text-secondary"
+                  })
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("auto-complete", {
+              attrs: {
+                items: this.availableItems,
+                isAsync: false,
+                model: "item",
+                placeHolder: "Search for ingredients..."
               },
+              on: { "item-added": _vm.addItem }
+            }),
+            _vm._v(" "),
+            _c(
+              "ul",
+              { staticClass: "list-group list-group-flush" },
               [
-                _c("i", {
-                  staticClass: "fas fa-plus-circle fa-fw text-secondary"
-                })
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c(
-            "ul",
-            { staticClass: "list-group list-group-flush" },
-            [
-              _vm.items.length < 1
-                ? _c("li", { staticClass: "list-group-item" }, [
-                    _vm._v(" No ingredients... ")
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _vm._l(_vm.items, function(item, index) {
-                return _c(
-                  "li",
-                  { key: item.id, staticClass: "list-group-item" },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "cursor-pointer",
-                        attrs: {
-                          id: "item_" + index,
-                          "data-toggle": "tooltip",
-                          title: "Remove ingredient"
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.removeItem(index)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-minus-circle fa-fw text-danger"
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "cursor-pointer",
-                        attrs: {
-                          id: "item_" + index,
-                          "data-toggle": "tooltip",
-                          title: "Edit ingredient"
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.createOrEditItem(item)
-                          }
-                        }
-                      },
-                      [
-                        _c("i", {
-                          staticClass: "fas fa-pen-square fa-fw text-secondary"
-                        })
-                      ]
-                    ),
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(item.name) +
-                        "\n                    "
-                    ),
-                    _c("small", { staticClass: "text-muted" }, [
-                      _vm._v("(" + _vm._s(item.aisle.name) + ")")
+                _vm.items.length < 1
+                  ? _c("li", { staticClass: "list-group-item" }, [
+                      _vm._v(" No ingredients... ")
                     ])
-                  ]
-                )
-              })
-            ],
-            2
-          )
-        ]),
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.items, function(item, index) {
+                  return _c(
+                    "li",
+                    { key: item.id, staticClass: "list-group-item" },
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "cursor-pointer",
+                          attrs: {
+                            id: "item_" + index,
+                            "data-toggle": "tooltip",
+                            title: "Remove ingredient"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.removeItem(index)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fas fa-minus-circle fa-fw text-danger"
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "cursor-pointer",
+                          attrs: {
+                            id: "item_" + index,
+                            "data-toggle": "tooltip",
+                            title: "Edit ingredient"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.createOrEditItem(item)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass:
+                              "fas fa-pen-square fa-fw text-secondary"
+                          })
+                        ]
+                      ),
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(item.name) +
+                          "\n                    "
+                      ),
+                      _c("small", { staticClass: "text-muted" }, [
+                        _vm._v("(" + _vm._s(item.aisle.name) + ")")
+                      ])
+                    ]
+                  )
+                })
+              ],
+              2
+            )
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("hr"),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.recipe.id,
+              expression: "recipe.id"
+            }
+          ],
+          attrs: { type: "hidden", name: "item_id", value: "" },
+          domProps: { value: _vm.recipe.id },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.recipe, "id", $event.target.value)
+            }
+          }
+        }),
         _vm._v(" "),
         _c("div", { staticClass: "form-buttons mb-4" }, [
           _c(

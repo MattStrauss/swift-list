@@ -1,6 +1,8 @@
 <template>
     <div>
-    <div class="card-header">{{recipe.name}}</div>
+    <div class="card-header">{{recipe.name}}
+        <a v-if="action !== 'Create'" :href="'/recipes/' + recipe.id" class="btn btn-sm btn-outline-secondary float-right"> <i class="fas fa-eye"></i> View Recipe</a>
+    </div>
         <div v-if="success" class="alert alert-primary fade show" role="alert" style="margin:2%;">
             <strong>Recipe Updated!</strong> Your changes have been saved.
             <button type="button" class="close" @click="success = false" aria-label="Close">
@@ -31,9 +33,11 @@
             <div class="form-group">
                 <label>
                     Ingredients <a data-toggle="tooltip" title="Add ingredient" class="cursor-pointer" @click="createOrEditItem()">
-                    <i class="fas fa-plus-circle fa-fw text-secondary"></i>
-                </a>
+                    <i class="fas fa-plus-circle fa-fw text-secondary"></i></a>
                 </label>
+
+                <auto-complete :items="this.availableItems" :isAsync="false" :model="'item'" :placeHolder="'Search for ingredients...'" @item-added="addItem"></auto-complete>
+
                 <ul class="list-group list-group-flush">
                     <li v-if="items.length < 1" class="list-group-item"> No ingredients... </li>
                     <li v-for="(item, index) in items" :key="item.id" class="list-group-item">
@@ -51,6 +55,8 @@
 
             <hr>
 
+            <input type="hidden" name="item_id" value="" v-model="recipe.id">
+
             <div class="form-buttons mb-4">
                 <a :href="previousUrl" class="btn btn-outline-secondary float-left">Back</a>
 
@@ -66,7 +72,7 @@
 
 <script>
     export default {
-        props: ['initialRecipe', 'initialItems', 'categories', 'previousUrl', 'action'],
+        props: ['initialRecipe', 'initialItems', 'availableItems', 'categories', 'previousUrl', 'initialAction'],
         data() {
             return {
                 recipe: this.initialRecipe,
@@ -74,6 +80,7 @@
                 errors: {},
                 processing: false,
                 success: false,
+                action: this.initialAction,
             }
         },
         created() {
@@ -100,13 +107,11 @@
                     url: uri,
                     data: this.recipe
                 }).then(response => {
+                    this.recipe = response.data;
                     this.processing = false;
-                    if (this.action === 'Add') {
-                        window.location = response.data.redirect;
-                    } else {
-                        this.success = flashSuccess;
-                        setTimeout(() => {this.success = false;}, 2000);
-                    }
+                    this.action = "Update";
+                    this.success = flashSuccess;
+                    setTimeout(() => {this.success = false;}, 2000);
                 }).catch(error => {
                     if (error.response.status === 422) {
                         this.processing = false;
@@ -114,14 +119,9 @@
                     }
                 });
             },
-            updateRecipe() {
-                if (this.action === "Update") {
-                    this.submit();
-                }
-            },
             addItem(item) {
                 this.items.push(item);
-                this.updateRecipe();
+                this.submit();
             },
             editItem(item) {
                 let itemToRemove = this.items.find(function(e) {
@@ -133,7 +133,7 @@
             removeItem(index) {
                 $('#item_' + index).tooltip('dispose'); // have to figure out non-jQuery/Vue way to do this...
                 this.$delete(this.items, index);
-                this.updateRecipe();
+                this.submit();
             },
             createOrEditItem(item) {
                 this.$emit('open-item-modal');

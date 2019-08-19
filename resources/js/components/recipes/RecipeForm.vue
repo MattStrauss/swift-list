@@ -51,7 +51,7 @@
 
             <hr>
 
-            <div class="form-buttons">
+            <div class="form-buttons mb-4">
                 <a :href="previousUrl" class="btn btn-outline-secondary float-left">Back</a>
 
                 <button type="submit" @submit="submit('flashSuccess')" :disabled="processing" class="btn btn-outline-primary float-right">

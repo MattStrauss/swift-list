@@ -2475,6 +2475,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addItem: function addItem(item) {
       this.includedItems.push(item);
+      this.saveList();
     },
     deleteItem: function deleteItem(index) {
       var _this = this;
@@ -2488,6 +2489,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.$delete(this.includedItems, index);
+      this.saveList();
     },
     showAislesToggle: function showAislesToggle() {
       this.showAisles = !this.showAisles;
@@ -2498,6 +2500,9 @@ __webpack_require__.r(__webpack_exports__);
       if (item) {
         Event.$emit('open-item-modal-edit', item);
       }
+    },
+    saveList: function saveList() {
+      this.$emit('save-list');
     }
   },
   computed: {
@@ -2553,13 +2558,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submit: function submit() {//
-    },
     addRecipe: function addRecipe(recipe) {
       this.includedRecipes.push(recipe);
+      this.saveList();
     },
     deleteRecipe: function deleteRecipe(index) {
       this.$delete(this.includedRecipes, index);
+      this.saveList();
+    },
+    saveList: function saveList() {
+      this.$emit('save-list');
     }
   }
 });
@@ -2636,7 +2644,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submit: function submit() {
+    submit: function submit(flashSuccess) {
       var _this = this;
 
       this.processing = true;
@@ -2659,7 +2667,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.list = response.data;
         _this.processing = false;
         _this.action = "Update";
-        _this.success = true;
+        _this.success = flashSuccess;
         setTimeout(function () {
           _this.success = false;
         }, 2000);
@@ -39670,7 +39678,7 @@ var render = function() {
         _vm._v(" "),
         _c("hr"),
         _vm._v(" "),
-        _c("div", { staticClass: "form-buttons" }, [
+        _c("div", { staticClass: "form-buttons mb-4" }, [
           _c(
             "a",
             {
@@ -40269,7 +40277,8 @@ var render = function() {
             attrs: {
               "available-recipes": this.availableRecipes,
               "initial-included-recipes": this.includedRecipes
-            }
+            },
+            on: { "save-list": _vm.submit }
           }),
           _vm._v(" "),
           _c("div", { staticClass: "clearfix" }),
@@ -40281,7 +40290,8 @@ var render = function() {
               "available-items": this.availableItems,
               "initial-included-items": this.includedItems,
               aisles: this.aisles
-            }
+            },
+            on: { "save-list": _vm.submit }
           }),
           _vm._v(" "),
           _c("div", { staticClass: "clearfix" }),
@@ -40323,7 +40333,12 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-outline-primary float-right",
-                attrs: { type: "submit", disabled: _vm.processing }
+                attrs: { type: "submit", disabled: _vm.processing },
+                on: {
+                  click: function($event) {
+                    return _vm.submit("flashSuccess")
+                  }
+                }
               },
               [
                 _c("span", {

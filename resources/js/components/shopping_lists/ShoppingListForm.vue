@@ -20,11 +20,11 @@
                         <div v-if="errors && errors.name" class="text-danger">{{ errors.name[0] }}</div>
                     </div>
 
-                        <recipes-section :available-recipes="this.availableRecipes" :initial-included-recipes="this.includedRecipes"></recipes-section>
+                        <recipes-section :available-recipes="this.availableRecipes" :initial-included-recipes="this.includedRecipes" @save-list="submit"></recipes-section>
 
                     <div class="clearfix"></div> <br>
 
-                        <items-section :available-items="this.availableItems" :initial-included-items="this.includedItems" :aisles="this.aisles"></items-section>
+                        <items-section :available-items="this.availableItems" :initial-included-items="this.includedItems" :aisles="this.aisles" @save-list="submit"></items-section>
 
                     <div class="clearfix"></div>
                     <hr>
@@ -34,7 +34,7 @@
                     <div class="form-buttons">
                         <a :href="previousUrl" class="btn btn-outline-secondary float-left">Back</a>
 
-                        <button type="submit" :disabled="processing" class="btn btn-outline-primary float-right">
+                        <button type="submit" @click="submit('flashSuccess')" :disabled="processing" class="btn btn-outline-primary float-right">
                             <span v-show="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             {{action}}
                         </button>
@@ -61,7 +61,7 @@
         },
         methods:
             {
-                submit() {
+                submit(flashSuccess) {
                     this.processing = true;
                     this.errors = {};
                     this.list['recipes'] = this.includedRecipes;
@@ -80,7 +80,7 @@
                         this.list = response.data;
                         this.processing = false;
                         this.action = "Update";
-                        this.success = true;
+                        this.success = flashSuccess;
                         setTimeout(() => {this.success = false;}, 2000);
                     }).catch(error => {
                         if (error.response.status === 422) {

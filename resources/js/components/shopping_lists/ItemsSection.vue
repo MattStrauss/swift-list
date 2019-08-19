@@ -63,12 +63,14 @@
             {
                 addItem(item) {
                     this.includedItems.push(item);
+                    this.saveList();
                 },
                 deleteItem(index, id = null) {
                     if (id !== null)  {
                         index = Object.keys(this.includedItems).find(key => this.includedItems[key].id === id);
                     }
                     this.$delete(this.includedItems, index);
+                    this.saveList();
                 },
                 showAislesToggle() {
                     this.showAisles = ! this.showAisles;
@@ -79,6 +81,9 @@
                         Event.$emit('open-item-modal-edit', item);
                     }
                 },
+                saveList() {
+                    this.$emit('save-list')
+                }
             },
         computed:
             {

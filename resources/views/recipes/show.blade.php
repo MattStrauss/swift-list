@@ -7,11 +7,12 @@
                 <div class="card">
                     <div class="card-header"> {{ $recipe->name }}
 
-                        <button @click="modalConfirmDeleteOpen = true" type="button" class="btn btn-sm btn-outline-danger float-right">Delete</button>
-
                         <a href="{{route('recipes.edit', $recipe->id)}}">
-                            <button type="button"  style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right">Edit</button>
+                            <button type="button"  style="margin-right:10px;" class="btn btn-sm btn-outline-secondary float-right ml-2"><i class="fas fa-edit"></i> Edit</button>
                         </a>
+
+                        <button @click="modalConfirmDeleteOpen = true" type="button" class="btn btn-sm btn-outline-danger float-right"><i class="fas fa-trash-alt"></i> Delete</button>
+
                     </div>
 
                     <div class="card-body">

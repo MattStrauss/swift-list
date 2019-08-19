@@ -6,9 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Shopping Lists
-                        <a href="{{route('shopping-lists.create')}}">
-                            <a href="{{route('shopping-lists.create')}}" type="button" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-fs fa-plus-circle"></i> New List</a>
-                        </a>
+                        <a href="{{route('shopping-lists.create')}}" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-fs fa-plus-circle"></i> New List</a>
                     </div>
 
                     @if (session()->has('status'))

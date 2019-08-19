@@ -22,15 +22,17 @@
         },
         methods:
             {
-                submit() {
-                    //
-                },
                 addRecipe(recipe) {
                     this.includedRecipes.push(recipe);
+                    this.saveList();
                 },
                 deleteRecipe(index) {
                     this.$delete(this.includedRecipes, index);
+                    this.saveList();
                 },
+                saveList() {
+                    this.$emit('save-list')
+                }
             },
     }
 </script>

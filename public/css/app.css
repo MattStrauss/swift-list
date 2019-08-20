@@ -15085,3 +15085,39 @@ a.text-dark:focus {
   display: inline-block;
 }
 
+.print-only {
+  display: none;
+}
+
+@media print {
+  header,
+  nav,
+  footer,
+  .btn,
+  .badge {
+    display: none;
+  }
+
+  div {
+    page-break-inside: avoid;
+  }
+
+@page {
+    margin: 2cm;
+}
+
+  blockquote,
+  ul {
+    margin: 0;
+  }
+
+  .list-group-item-dark {
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+
+  .print-only {
+    display: inline;
+  }
+}
+

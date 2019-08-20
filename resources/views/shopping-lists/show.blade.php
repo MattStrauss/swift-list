@@ -6,6 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ $shopping_list->name }}
+                        <button onclick="window.print()" type="button" class="btn btn-sm btn-outline-secondary float-right ml-2"> <i class="fas fa-print"></i> Print List</button>
                         <a href="{{route('shopping-lists.edit', $shopping_list->id)}}" class="btn btn-sm btn-outline-secondary float-right ml-2"> <i class="fas fa-edit"></i> Edit List</a>
                         <button @click="modalConfirmDeleteOpen = true" type="button" class="btn btn-sm btn-outline-danger float-right"> <i class="fas fa-trash-alt"></i> Delete List</button>
                     </div>
@@ -24,25 +25,34 @@
 
                         <h4> List</h4>
 
-                            @foreach($items as $aisleItems)
+                            @foreach($items->chunk(3) as $chunk)
 
-                                <ul class="list-group list-group-flush">
+                            <div class="row mb-2">
 
-                                    @foreach($aisleItems->sortBy('name') as $item)
+                                @foreach($chunk as $aisleItems)
 
-                                        @if ($loop->first)
+                                    <ul class="list-group list-group-flush col-4 col-sm-4 col-xs-4">
 
-                                            <li class="list-group-item list-group-item-dark">{{ $item->aisle->name }}
-                                                <span class="badge badge-light badge-primary badge-pill">{{ $loop->count}}</span>
-                                            </li>
+                                        @foreach($aisleItems->sortBy('name') as $item)
 
-                                        @endif
+                                            @if ($loop->first)
 
-                                            <li class="list-group-item">{{ $item->name }}</li>
+                                                <li class="list-group-item list-group-item-dark">{{ $item->aisle->name }}
+                                                    <span class="badge badge-light badge-primary badge-pill">{{ $loop->count}}</span>
+                                                    <span class="print-only"><small>({{$loop->count}})</small></span>
+                                                </li>
 
-                                    @endforeach
+                                            @endif
 
-                                </ul>
+                                                <li class="list-group-item">{{ $item->name }}</li>
+
+                                        @endforeach
+
+                                    </ul>
+
+                                @endforeach
+
+                            </div>
 
                             @endforeach
 

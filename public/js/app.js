@@ -2391,10 +2391,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     filteredRecipes: function filteredRecipes() {
-      var self = this; // for scope below
+      var _this = this;
 
       return this.recipes.filter(function (recipe) {
-        return recipe.name.toLowerCase().indexOf(self.search.toLowerCase()) >= 0;
+        return recipe.name.toLowerCase().indexOf(_this.search.toLowerCase()) >= 0;
       });
     }
   }

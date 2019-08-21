@@ -44,10 +44,7 @@
         computed:
             {
                 filteredRecipes() {
-                    let self = this; // for scope below
-                    return this.recipes.filter(function (recipe) {
-                        return recipe.name.toLowerCase().indexOf(self.search.toLowerCase()) >= 0
-                    });
+                    return this.recipes.filter((recipe) => recipe.name.toLowerCase().indexOf(this.search.toLowerCase()) >= 0);
                 },
             }
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aisle;
 use App\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,10 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Auth::user()->items()->with(['aisle'])->get();
+        $aisles = Aisle::all();
+
+        return view('items.index', compact('items', 'aisles'));
     }
 
     /**

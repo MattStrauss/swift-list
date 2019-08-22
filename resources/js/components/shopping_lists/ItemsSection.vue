@@ -17,12 +17,12 @@
                 </a>
                 <ul class="list-group list-group-flush collapse" :id="'_'+ items[0]">
                     <li v-if="index !== 0" v-for="(item, index) in items" class="list-group-item">
-                                    <span v-if="! includedItems.includes(item)" @click="addItem(item)" class="item-add-able">
-                                        <i class="fa fa-plus fa-fw add-able-icon"></i> {{item.name}}
-                                    </span>
+                        <span v-if="! includedItems.includes(item)" @click="addItem(item)" class="item-add-able">
+                            <i class="fa fa-plus fa-fw add-able-icon"></i> {{item.name}}
+                        </span>
                         <span v-else class="aisle-item-delete-able">
-                                        <i @click="deleteItem(null, item.id)" class="fa fa-times fa-fw"></i> {{item.name}}
-                                    </span>
+                            <i @click="deleteItem(null, item.id)" class="fa fa-times fa-fw"></i> {{item.name}}
+                        </span>
                     </li>
                 </ul>
             </div>

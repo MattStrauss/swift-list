@@ -27,6 +27,7 @@ Vue.component('shopping-list-form', require('./components/shopping_lists/Shoppin
 Vue.component('auto-complete', require('./components/global/AutoComplete.vue').default);
 Vue.component('items-section', require('./components/shopping_lists/ItemsSection.vue').default);
 Vue.component('recipes-section', require('./components/shopping_lists/RecipesSection.vue').default);
+Vue.component('items-index', require('./components/items/ItemsIndex.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

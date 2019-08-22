@@ -17,6 +17,7 @@
                         <div class="list-group">
                             <a href="{{route('recipes.index')}}" class="list-group-item list-group-item-action">Recipes</a>
                             <a href="{{route('shopping-lists.index')}}" class="list-group-item list-group-item-action">Shopping Lists</a>
+                            <a href="{{route('items.index')}}" class="list-group-item list-group-item-action">Items</a>
                             <a href="#" class="list-group-item list-group-item-action">Aisle Order</a>
                         </div>
                 </div>

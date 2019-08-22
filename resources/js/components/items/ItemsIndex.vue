@@ -22,9 +22,11 @@
                         <ul class="list-group list-group-flush collapse" :id="'_'+ items[0]">
                             <li v-if="index !== 0" v-for="(item, index) in items" class="list-group-item">
                                 <span class="aisle-item">
+                                    <i v-if="favorites.includes(item)" @click="removeFromFavorites(item)" class="fas fa-star fa-fw text-warning"></i>
+                                    <i v-if="! favorites.includes(item)" @click="addToFavorites(item)" class="far fa-star fa-fw"></i>
                                     {{item.name}}
-                                    <i @click="createOrEditItem(item)" class="fa fa-edit fa-fw"></i>
-                                    <i @click="deleteItem(item)" class="fa fa-trash-alt fa-fw"></i>
+                                    <i @click="createOrEditItem(item)" class="fas fa-edit fa-fw"></i>
+                                    <i @click="deleteItemModal(item)" class="fas fa-trash-alt fa-fw text-danger"></i>
                                 </span>
                             </li>
                         </ul>
@@ -36,7 +38,8 @@
 
             <modal-item :initial-item='{}' :initial-action="'Add'" :aisles='this.aisles' v-show="modalItemOpen" @close-item-modal="modalItemOpen = false"></modal-item>
 
-            <modal-confirm-delete :model_type= "'item'" :model_id= 'itemBeingDeleted.id' :model_name="itemBeingDeleted.name" v-show="modalConfirmDeleteOpen" @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
+            <modal-confirm-delete :model_type= "'items'" :model_id= 'itemBeingDeleted.id' :model_name="itemBeingDeleted.name" :redirect="false" @delete-success="removeItem"
+                                  v-show="modalConfirmDeleteOpen" @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
 
                 <template v-slot:title> Confirm Delete </template>
                 <template v-slot:body> Are you sure that you want to delete this item? This action <strong>cannot be undone</strong>.  </template>
@@ -50,7 +53,7 @@
 
 <script>
     export default {
-        props: ['initialAvailableItems', 'aisles'],
+        props: ['initialAvailableItems', 'aisles', 'initialFavoriteItems'],
         data() {
             return {
                 items: this.initialAvailableItems,
@@ -58,6 +61,7 @@
                 modalConfirmDeleteOpen: false,
                 success: false,
                 itemBeingDeleted: {id: 0, name: null},
+                favorites: this.initialFavoriteItems,
             }
         },
         created() {
@@ -73,14 +77,13 @@
                 addItem(item) {
                     this.items.push(item);
                 },
-                deleteItem(item) {
+                deleteItemModal(item) {
                     this.itemBeingDeleted = item;
                     this.modalConfirmDeleteOpen = true;
-
-                    // if (id !== null)  {
-                    //     index = Object.keys(this.items).find(key => this.items[key].id === id);
-                    // }
-                    // this.$delete(this.items, index);
+                },
+                removeItem(id) {
+                    let index = Object.keys(this.items).find(key => this.items[key].id === id);
+                    this.$delete(this.items, index);
                 },
                 editItem(item) {
                     let itemToRemove = this.items.find(function(e) {
@@ -94,6 +97,13 @@
                     if (item) {
                         Event.$emit('open-item-modal-edit', item);
                     }
+                },
+                removeFromFavorites(item) {
+                    let index = Object.keys(this.favorites).find(key => this.favorites[key].id === item.id);
+                    this.$delete(this.favorites, index);
+                },
+                addToFavorites(item) {
+                    this.favorites.push(item)
                 },
             },
         computed:
@@ -110,7 +120,6 @@
                             }
                         }
                         aisles[""+currentAisleName+""].push(item);
-
                     });
 
                     return aisles;
@@ -127,6 +136,10 @@
     .no-style-anchor:hover {
         text-decoration: none;
         color: inherit;
+    }
+
+    i:hover {
+        cursor: pointer;
     }
 
 </style>

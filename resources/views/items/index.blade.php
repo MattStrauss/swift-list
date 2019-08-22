@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <items-index :initial-available-items='@json($items)' :aisles='@json($aisles)'></items-index>
+                <items-index :initial-available-items='@json($items)' :aisles='@json($aisles)'  :initial-favorite-items='@json([])' ></items-index>
 
             </div>
         </div>

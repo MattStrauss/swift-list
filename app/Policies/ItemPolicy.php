@@ -65,7 +65,7 @@ class ItemPolicy
      */
     public function delete(User $user, Item $item)
     {
-        //
+        return $user->id === (int) $item->user_id;
     }
 
     /**

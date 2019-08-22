@@ -90,11 +90,20 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Item  $item
+     *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Item $item)
     {
-        //
+        if (! $item->delete()) {
+
+            $error = ['error' => 'Error deleting item, please try again.'];
+
+            return response()->json($error, 422);
+        }
+
+        return response()->json(null, 200);
     }
 }

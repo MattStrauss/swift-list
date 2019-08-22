@@ -59,7 +59,8 @@
                     </div>
                 </div>
             </div>
-            <modal-confirm-delete :model_type= '@json("shopping-lists")' :model_id= '@json($shopping_list->id)' v-show="modalConfirmDeleteOpen" @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
+            <modal-confirm-delete :model_type= '@json("shopping-lists")' :model_id= '@json($shopping_list->id)' v-show="modalConfirmDeleteOpen" :redirect="true"
+                                  @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
 
                 <template v-slot:title> Confirm Delete </template>
                 <template v-slot:body> Are you sure that you want to delete this shopping list? This action <strong>cannot be undone</strong>.  </template>

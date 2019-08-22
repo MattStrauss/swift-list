@@ -2007,7 +2007,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['model_type', 'model_id', 'model_name'],
+  props: ['model_type', 'model_id', 'model_name', 'redirect'],
   data: function data() {
     return {
       processing: false,
@@ -2021,7 +2021,14 @@ __webpack_require__.r(__webpack_exports__);
       this.processing = true;
       axios["delete"]('/' + this.model_type + '/' + this.model_id).then(function (response) {
         _this.processing = false;
-        window.location = response.data.redirect;
+
+        if (_this.redirect) {
+          window.location = response.data.redirect;
+        } else {
+          _this.$emit('delete-success', _this.model_id);
+
+          _this.$emit('close-confirm-delete-modal');
+        }
       })["catch"](function (error) {
         _this.processing = false;
         _this.error = error.response.data.error;
@@ -2091,8 +2098,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialAvailableItems', 'aisles'],
+  props: ['initialAvailableItems', 'aisles', 'initialFavoriteItems'],
   data: function data() {
     return {
       items: this.initialAvailableItems,
@@ -2102,7 +2112,8 @@ __webpack_require__.r(__webpack_exports__);
       itemBeingDeleted: {
         id: 0,
         name: null
-      }
+      },
+      favorites: this.initialFavoriteItems
     };
   },
   created: function created() {
@@ -2117,12 +2128,17 @@ __webpack_require__.r(__webpack_exports__);
     addItem: function addItem(item) {
       this.items.push(item);
     },
-    deleteItem: function deleteItem(item) {
+    deleteItemModal: function deleteItemModal(item) {
       this.itemBeingDeleted = item;
-      this.modalConfirmDeleteOpen = true; // if (id !== null)  {
-      //     index = Object.keys(this.items).find(key => this.items[key].id === id);
-      // }
-      // this.$delete(this.items, index);
+      this.modalConfirmDeleteOpen = true;
+    },
+    removeItem: function removeItem(id) {
+      var _this = this;
+
+      var index = Object.keys(this.items).find(function (key) {
+        return _this.items[key].id === id;
+      });
+      this.$delete(this.items, index);
     },
     editItem: function editItem(item) {
       var itemToRemove = this.items.find(function (e) {
@@ -2137,6 +2153,17 @@ __webpack_require__.r(__webpack_exports__);
       if (item) {
         Event.$emit('open-item-modal-edit', item);
       }
+    },
+    removeFromFavorites: function removeFromFavorites(item) {
+      var _this2 = this;
+
+      var index = Object.keys(this.favorites).find(function (key) {
+        return _this2.favorites[key].id === item.id;
+      });
+      this.$delete(this.favorites, index);
+    },
+    addToFavorites: function addToFavorites(item) {
+      this.favorites.push(item);
     }
   },
   computed: {
@@ -7306,7 +7333,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.no-style-anchor {\n    text-decoration: none;\n    color: inherit;\n}\n.no-style-anchor:hover {\n    text-decoration: none;\n    color: inherit;\n}\n\n", ""]);
+exports.push([module.i, "\n.no-style-anchor {\n    text-decoration: none;\n    color: inherit;\n}\n.no-style-anchor:hover {\n    text-decoration: none;\n    color: inherit;\n}\ni:hover {\n    cursor: pointer;\n}\n\n", ""]);
 
 // exports
 
@@ -39248,7 +39275,7 @@ var render = function() {
                 _vm._t("title"),
                 _vm._v(" "),
                 _vm.model_name
-                  ? _c("span", [_vm._v(" " + _vm._s(_vm.model_name))])
+                  ? _c("span", [_vm._v(" - " + _vm._s(_vm.model_name))])
                   : _vm._e()
               ],
               2
@@ -39430,13 +39457,35 @@ var render = function() {
                       return index !== 0
                         ? _c("li", { staticClass: "list-group-item" }, [
                             _c("span", { staticClass: "aisle-item" }, [
+                              _vm.favorites.includes(item)
+                                ? _c("i", {
+                                    staticClass:
+                                      "fas fa-star fa-fw text-warning",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.removeFromFavorites(item)
+                                      }
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              !_vm.favorites.includes(item)
+                                ? _c("i", {
+                                    staticClass: "far fa-star fa-fw",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.addToFavorites(item)
+                                      }
+                                    }
+                                  })
+                                : _vm._e(),
                               _vm._v(
                                 "\n                                " +
                                   _vm._s(item.name) +
                                   "\n                                "
                               ),
                               _c("i", {
-                                staticClass: "fa fa-edit fa-fw",
+                                staticClass: "fas fa-edit fa-fw",
                                 on: {
                                   click: function($event) {
                                     return _vm.createOrEditItem(item)
@@ -39445,10 +39494,11 @@ var render = function() {
                               }),
                               _vm._v(" "),
                               _c("i", {
-                                staticClass: "fa fa-trash-alt fa-fw",
+                                staticClass:
+                                  "fas fa-trash-alt fa-fw text-danger",
                                 on: {
                                   click: function($event) {
-                                    return _vm.deleteItem(item)
+                                    return _vm.deleteItemModal(item)
                                   }
                                 }
                               })
@@ -39496,11 +39546,13 @@ var render = function() {
             }
           ],
           attrs: {
-            model_type: "item",
+            model_type: "items",
             model_id: _vm.itemBeingDeleted.id,
-            model_name: _vm.itemBeingDeleted.name
+            model_name: _vm.itemBeingDeleted.name,
+            redirect: false
           },
           on: {
+            "delete-success": _vm.removeItem,
             "close-confirm-delete-modal": function($event) {
               _vm.modalConfirmDeleteOpen = false
             }

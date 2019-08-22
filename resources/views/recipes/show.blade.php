@@ -53,7 +53,8 @@
 
 
             </div>
-            <modal-confirm-delete :model_type= '@json("recipes")' :model_id= '@json($recipe->id)' v-show="modalConfirmDeleteOpen" @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
+            <modal-confirm-delete :model_type= '@json("recipes")' :model_id= '@json($recipe->id)' v-show="modalConfirmDeleteOpen" :redirect="true"
+                                  @close-confirm-delete-modal="modalConfirmDeleteOpen = false">
 
                 <template v-slot:title> Confirm Delete </template>
                 <template v-slot:body> Are you sure that you want to delete this recipe? This action <strong>cannot be undone</strong>.  </template>

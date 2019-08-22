@@ -10,7 +10,7 @@
                         </button>
                     </div>
                     <div class="modal-header">
-                                <h5 class="modal-title"><slot name="title"></slot> <span v-if="model_name"> {{model_name}}</span></h5>
+                                <h5 class="modal-title"><slot name="title"></slot> <span v-if="model_name"> - {{model_name}}</span></h5>
                                 <button @click="$emit('close-confirm-delete-modal')" type="button" class="close" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        props: ['model_type', 'model_id', 'model_name'],
+        props: ['model_type', 'model_id', 'model_name', 'redirect'],
         data() {
             return {
                 processing: false,
@@ -45,7 +45,11 @@
                 this.processing = true;
                 axios.delete('/'+this.model_type+'/' + this.model_id).then(response => {
                     this.processing = false;
-                    window.location = response.data.redirect;
+                    if (this.redirect) { window.location = response.data.redirect; }
+                    else {
+                        this.$emit('delete-success', this.model_id);
+                        this.$emit('close-confirm-delete-modal');
+                    }
                 }).catch(error => {
                     this.processing = false;
                     this.error = error.response.data.error;

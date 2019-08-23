@@ -2101,6 +2101,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['initialAvailableItems', 'aisles', 'initialFavoriteItems'],
   data: function data() {
@@ -2113,7 +2123,8 @@ __webpack_require__.r(__webpack_exports__);
         id: 0,
         name: null
       },
-      favorites: this.initialFavoriteItems
+      favorites: this.initialFavoriteItems,
+      error: ''
     };
   },
   created: function created() {
@@ -2141,8 +2152,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$delete(this.items, index);
     },
     editItem: function editItem(item) {
-      var itemToRemove = this.items.find(function (e) {
-        return e.id === item.id;
+      var itemToRemove = this.items.find(function (i) {
+        return i.id === item.id;
       });
       var index = this.items.indexOf(itemToRemove);
       this.items.splice(index, 1, item);
@@ -2154,16 +2165,15 @@ __webpack_require__.r(__webpack_exports__);
         Event.$emit('open-item-modal-edit', item);
       }
     },
-    removeFromFavorites: function removeFromFavorites(item) {
+    updateFavoriteStatus: function updateFavoriteStatus(item, add_remove) {
       var _this2 = this;
 
-      var index = Object.keys(this.favorites).find(function (key) {
-        return _this2.favorites[key].id === item.id;
+      item.favorite = add_remove;
+      axios.put('/items/' + item.id, item).then(function (response) {
+        item = response.data;
+      })["catch"](function (error) {
+        _this2.error = error.response.data.error;
       });
-      this.$delete(this.favorites, index);
-    },
-    addToFavorites: function addToFavorites(item) {
-      this.favorites.push(item);
     }
   },
   computed: {
@@ -39372,7 +39382,7 @@ var render = function() {
       { staticClass: "card" },
       [
         _c("div", { staticClass: "card-header" }, [
-          _vm._v("Items\n                "),
+          _vm._v("Items\n            "),
           _c(
             "button",
             {
@@ -39420,99 +39430,137 @@ var render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
+        _vm.error
+          ? _c(
+              "div",
+              {
+                staticClass: "alert alert-danger fade show",
+                staticStyle: { margin: "2%" },
+                attrs: { role: "alert" }
+              },
+              [
+                _c("strong", [_vm._v(" Error: ")]),
+                _vm._v(" " + _vm._s(_vm.error) + "\n            "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "aria-label": "Close" },
+                    on: {
+                      click: function($event) {
+                        _vm.success = false
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "card-body" },
-          _vm._l(this.itemsByAisle, function(items, index) {
-            return _c(
-              "div",
-              { staticClass: "col-sm-4 mb-4 float-left collapse show" },
-              [
-                _c("div", { staticClass: "card" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "card-header no-style-anchor",
-                      attrs: {
-                        "data-toggle": "collapse",
-                        href: "#_" + items[0]
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(index) +
-                          "\n                    "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "ul",
-                    {
-                      staticClass: "list-group list-group-flush collapse",
-                      attrs: { id: "_" + items[0] }
-                    },
-                    _vm._l(items, function(item, index) {
-                      return index !== 0
-                        ? _c("li", { staticClass: "list-group-item" }, [
-                            _c("span", { staticClass: "aisle-item" }, [
-                              _vm.favorites.includes(item)
-                                ? _c("i", {
-                                    staticClass:
-                                      "fas fa-star fa-fw text-warning",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.removeFromFavorites(item)
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._l(this.itemsByAisle, function(items, index) {
+              return _c(
+                "div",
+                { staticClass: "col-sm-4 mb-4 float-left collapse show" },
+                [
+                  _c("div", { staticClass: "card" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "card-header no-style-anchor",
+                        attrs: {
+                          "data-toggle": "collapse",
+                          href: "#_" + items[0]
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(index) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      {
+                        staticClass: "list-group list-group-flush collapse",
+                        attrs: { id: "_" + items[0] }
+                      },
+                      _vm._l(items, function(item, index) {
+                        return index !== 0
+                          ? _c("li", { staticClass: "list-group-item" }, [
+                              _c("span", { staticClass: "aisle-item" }, [
+                                item.favorite
+                                  ? _c("i", {
+                                      staticClass:
+                                        "fas fa-star fa-fw text-warning",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.updateFavoriteStatus(
+                                            item,
+                                            false
+                                          )
+                                        }
                                       }
-                                    }
-                                  })
-                                : _vm._e(),
-                              _vm._v(" "),
-                              !_vm.favorites.includes(item)
-                                ? _c("i", {
-                                    staticClass: "far fa-star fa-fw",
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.addToFavorites(item)
+                                    })
+                                  : _c("i", {
+                                      staticClass: "far fa-star fa-fw",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.updateFavoriteStatus(
+                                            item,
+                                            true
+                                          )
+                                        }
                                       }
+                                    }),
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(item.name) +
+                                    "\n                                "
+                                ),
+                                _c("i", {
+                                  staticClass: "fas fa-edit fa-fw",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.createOrEditItem(item)
                                     }
-                                  })
-                                : _vm._e(),
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(item.name) +
-                                  "\n                                "
-                              ),
-                              _c("i", {
-                                staticClass: "fas fa-edit fa-fw",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.createOrEditItem(item)
                                   }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("i", {
-                                staticClass:
-                                  "fas fa-trash-alt fa-fw text-danger",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.deleteItemModal(item)
+                                }),
+                                _vm._v(" "),
+                                _c("i", {
+                                  staticClass:
+                                    "fas fa-trash-alt fa-fw text-danger",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.deleteItemModal(item)
+                                    }
                                   }
-                                }
-                              })
+                                })
+                              ])
                             ])
-                          ])
-                        : _vm._e()
-                    }),
-                    0
-                  )
-                ])
-              ]
-            )
-          }),
-          0
+                          : _vm._e()
+                      }),
+                      0
+                    )
+                  ])
+                ]
+              )
+            })
+          ],
+          2
         ),
         _vm._v(" "),
         _c("modal-item", {
@@ -39585,7 +39633,23 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center mb-4" }, [
+      _vm._v(
+        " To add or remove items to/from your favorites list, simply click the\n                "
+      ),
+      _c("i", {
+        staticClass: "far fa-star fa-fw",
+        staticStyle: { cursor: "text" }
+      }),
+      _vm._v(" next to the item name.\n            ")
+    ])
+  }
+]
 render._withStripped = true
 
 

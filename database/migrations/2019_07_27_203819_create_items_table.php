@@ -17,6 +17,7 @@ class CreateItemsTable extends Migration
             $table->bigIncrements('id');
             $table->text('name');
             $table->unsignedBigInteger('user_id');
+            $table->boolean('favorite')->default(0);
             $table->foreign('user_id')
                   ->references('id')->on('users')
                   ->onDelete('cascade');

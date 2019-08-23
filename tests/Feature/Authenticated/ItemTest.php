@@ -70,13 +70,13 @@ class ItemTest extends TestCase
         $user = factory(User::class)->create();
         $aisle = factory(Aisle::class)->create();
         $item = factory(Item::class)->create(['user_id' => $user->id]);
-        $itemData = ['name' => 'Bread', 'aisle_id' => $aisle->id];
+        $itemData = ['name' => 'Bread', 'aisle_id' => $aisle->id, 'favorite' => true];
 
         $response = $this->actingAs($user)->put('/items/'. $item->id, $itemData);
 
         $response->assertOk();
         $this->assertDatabaseHas('items',
-            ['name' => 'Bread', 'aisle_id' => $aisle->id, 'user_id' => $user->id, 'id' => $item->id]);
+            ['name' => 'Bread', 'aisle_id' => $aisle->id, 'user_id' => $user->id, 'id' => $item->id, 'favorite' => true]);
     }
 
     /** @test */

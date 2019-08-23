@@ -1,18 +1,28 @@
 <template>
     <div>
         <div class="card">
-                <div class="card-header">Items
-                    <button @click="createOrEditItem()" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-plus-circle"></i> New Item</button>
-                </div>
+            <div class="card-header">Items
+                <button @click="createOrEditItem()" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-plus-circle"></i> New Item</button>
+            </div>
 
-                <div v-if="success" class="alert alert-primary fade show" role="alert" style="margin:2%;">
-                    <strong> Your changes have been saved! </strong>
-                    <button type="button" class="close" @click="success = false" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+            <div v-if="success" class="alert alert-primary fade show" role="alert" style="margin:2%;">
+                <strong> Your changes have been saved! </strong>
+                <button type="button" class="close" @click="success = false" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div v-if="error" class="alert alert-danger fade show" role="alert" style="margin:2%;">
+                <strong> Error: </strong> {{error}}
+                <button type="button" class="close" @click="success = false" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
             <div class="card-body">
+                <p class="text-center mb-4"> To add or remove items to/from your favorites list, simply click the
+                    <i class="far fa-star fa-fw" style="cursor:text;"></i> next to the item name.
+                </p>
 
                 <div class="col-sm-4 mb-4 float-left collapse show" v-for="(items, index) in this.itemsByAisle">
                     <div class="card">
@@ -22,8 +32,8 @@
                         <ul class="list-group list-group-flush collapse" :id="'_'+ items[0]">
                             <li v-if="index !== 0" v-for="(item, index) in items" class="list-group-item">
                                 <span class="aisle-item">
-                                    <i v-if="favorites.includes(item)" @click="removeFromFavorites(item)" class="fas fa-star fa-fw text-warning"></i>
-                                    <i v-if="! favorites.includes(item)" @click="addToFavorites(item)" class="far fa-star fa-fw"></i>
+                                    <i v-if="item.favorite" @click="updateFavoriteStatus(item, false)" class="fas fa-star fa-fw text-warning"></i>
+                                    <i v-else @click="updateFavoriteStatus(item, true)" class="far fa-star fa-fw"></i>
                                     {{item.name}}
                                     <i @click="createOrEditItem(item)" class="fas fa-edit fa-fw"></i>
                                     <i @click="deleteItemModal(item)" class="fas fa-trash-alt fa-fw text-danger"></i>
@@ -62,6 +72,7 @@
                 success: false,
                 itemBeingDeleted: {id: 0, name: null},
                 favorites: this.initialFavoriteItems,
+                error: '',
             }
         },
         created() {
@@ -86,9 +97,7 @@
                     this.$delete(this.items, index);
                 },
                 editItem(item) {
-                    let itemToRemove = this.items.find(function(e) {
-                        return e.id === item.id;
-                    });
+                    let itemToRemove = this.items.find(i => i.id === item.id);
                     let index = this.items.indexOf(itemToRemove);
                     this.items.splice(index, 1, item);
                 },
@@ -98,13 +107,14 @@
                         Event.$emit('open-item-modal-edit', item);
                     }
                 },
-                removeFromFavorites(item) {
-                    let index = Object.keys(this.favorites).find(key => this.favorites[key].id === item.id);
-                    this.$delete(this.favorites, index);
-                },
-                addToFavorites(item) {
-                    this.favorites.push(item)
-                },
+                updateFavoriteStatus(item, add_remove) {
+                    item.favorite = add_remove;
+                    axios.put('/items/' + item.id, item).then(response => {
+                        item = response.data;
+                    }).catch(error => {
+                        this.error = error.response.data.error;
+                    });
+                }
             },
         computed:
             {

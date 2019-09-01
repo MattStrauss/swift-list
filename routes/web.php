@@ -24,3 +24,5 @@ Route::resource('items', 'ItemController')->middleware('auth');
 Route::resource('recipes', 'RecipeController')->middleware('auth');
 
 Route::resource('shopping-lists', 'ShoppingListController')->middleware('auth');
+
+Route::resource('aisles', 'AisleController')->only(['index', 'store']);

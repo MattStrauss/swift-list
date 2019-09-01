@@ -2690,7 +2690,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         this.saveList();
       } else {
         this.favoriteItems.forEach(function (item) {
-          return _this2.includedItems.indexOf(item.id) ? _this2.deleteItem(null, item.id) : false;
+          return _this2.includedItems.find(function (included) {
+            return included.id === item.id;
+          }) ? _this2.deleteItem(null, item.id) : false;
         });
       }
     },

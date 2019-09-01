@@ -83,7 +83,7 @@
                         this.includedItems.push(...this.favoriteItemsNotOnList);
                         this.saveList();
                     } else {
-                        this.favoriteItems.forEach(item => (this.includedItems.indexOf(item.id)) ? this.deleteItem(null, item.id) : false);
+                        this.favoriteItems.forEach(item => (this.includedItems.find(included => included.id === item.id)) ? this.deleteItem(null, item.id) : false);
                     }
                 },
                 createOrEditItem(item) {

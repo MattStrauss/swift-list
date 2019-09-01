@@ -2642,20 +2642,26 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['availableItems', 'initialIncludedItems', 'aisles'],
   data: function data() {
     return {
       includedItems: this.initialIncludedItems,
       showAisles: false,
-      modalItemOpen: false
+      modalItemOpen: false,
+      items: this.availableItems
     };
   },
   created: function created() {
     Event.$on('item-added', this.addItem);
+    Event.$on('item-edited', this.editItem);
   },
   destroyed: function destroyed() {
     Event.$off('item-added');
+    Event.$off('item-edited');
   },
   methods: {
     addItem: function addItem(item) {
@@ -2696,6 +2702,13 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         });
       }
     },
+    editItem: function editItem(item) {
+      var itemToRemove = this.items.find(function (i) {
+        return i.id === item.id;
+      });
+      var index = this.items.indexOf(itemToRemove);
+      this.items.splice(index, 1, item);
+    },
     createOrEditItem: function createOrEditItem(item) {
       this.modalItemOpen = true;
 
@@ -2711,7 +2724,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     itemsByAisle: function itemsByAisle() {
       var aisles = {};
       var currentAisleName = "";
-      this.availableItems.forEach(function (item) {
+      this.items.forEach(function (item) {
         if (item.aisle.name !== currentAisleName) {
           currentAisleName = item.aisle.name;
 
@@ -2726,7 +2739,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     },
     favoriteItems: function favoriteItems() {
       var favorites = [];
-      this.availableItems.forEach(function (item) {
+      this.items.forEach(function (item) {
         return item.favorite ? favorites.push(item) : false;
       });
       return favorites;
@@ -40560,7 +40573,7 @@ var render = function() {
       _vm._v(" "),
       _c("auto-complete", {
         attrs: {
-          items: _vm.availableItems,
+          items: this.items,
           isAsync: false,
           model: "item",
           placeHolder: "Search Items..."
@@ -40607,27 +40620,39 @@ var render = function() {
                   return index !== 0
                     ? _c("li", { staticClass: "list-group-item" }, [
                         !_vm.includedItems.includes(item)
-                          ? _c(
-                              "span",
-                              {
-                                staticClass: "item-add-able",
+                          ? _c("span", [
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "item-add-able",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.addItem(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass:
+                                      "fa fa-plus fa-fw add-able-icon"
+                                  }),
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(item.name) +
+                                      "\n                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("i", {
+                                staticClass: "fas fa-edit fa-fw",
                                 on: {
                                   click: function($event) {
-                                    return _vm.addItem(item)
+                                    return _vm.createOrEditItem(item)
                                   }
                                 }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-plus fa-fw add-able-icon"
-                                }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(item.name) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
+                              })
+                            ])
                           : _c(
                               "span",
                               { staticClass: "aisle-item-delete-able" },

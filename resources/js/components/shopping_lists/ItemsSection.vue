@@ -11,7 +11,7 @@
                 <i :class="{'fas fa-times': this.favoriteItemsAllOnList, 'fas fa-plus': ! this.favoriteItemsAllOnList}"></i> Favorite Items
             </a>
         </h6>
-        <auto-complete :items="availableItems" :isAsync="false" :model="'item'" :placeHolder="'Search Items...'" @item-added="addItem"></auto-complete>
+        <auto-complete :items="this.items" :isAsync="false" :model="'item'" :placeHolder="'Search Items...'" @item-added="addItem"></auto-complete>
 
         <div v-show="showAisles" class="col-sm-4 mb-4 float-left collapse show" v-for="(items, index) in this.itemsByAisle">
             <div class="card">
@@ -20,8 +20,11 @@
                 </a>
                 <ul class="list-group list-group-flush collapse" :id="'_'+ items[0]">
                     <li v-if="index !== 0" v-for="(item, index) in items" class="list-group-item">
-                        <span v-if="! includedItems.includes(item)" @click="addItem(item)" class="item-add-able">
-                            <i class="fa fa-plus fa-fw add-able-icon"></i> {{item.name}}
+                        <span v-if="! includedItems.includes(item)">
+                            <span @click="addItem(item)" class="item-add-able">
+                                <i class="fa fa-plus fa-fw add-able-icon"></i> {{item.name}}
+                            </span>
+                            <i @click="createOrEditItem(item)" class="fas fa-edit fa-fw"></i>
                         </span>
                         <span v-else class="aisle-item-delete-able">
                             <i @click="deleteItem(null, item.id)" class="fa fa-times fa-fw"></i> {{item.name}}
@@ -54,13 +57,16 @@
                 includedItems: this.initialIncludedItems,
                 showAisles: false,
                 modalItemOpen: false,
+                items: this.availableItems,
             }
         },
         created() {
             Event.$on('item-added', this.addItem);
+            Event.$on('item-edited', this.editItem);
         },
         destroyed() {
             Event.$off('item-added');
+            Event.$off('item-edited');
         },
         methods:
             {
@@ -86,6 +92,11 @@
                         this.favoriteItems.forEach(item => (this.includedItems.find(included => included.id === item.id)) ? this.deleteItem(null, item.id) : false);
                     }
                 },
+                editItem(item) {
+                    let itemToRemove = this.items.find(i => i.id === item.id);
+                    let index = this.items.indexOf(itemToRemove);
+                    this.items.splice(index, 1, item);
+                },
                 createOrEditItem(item) {
                     this.modalItemOpen = true;
                     if (item) {
@@ -102,7 +113,7 @@
                     let aisles = {};
                     let currentAisleName = "";
 
-                    this.availableItems.forEach(function (item) {
+                    this.items.forEach(function (item) {
                         if (item.aisle.name !== currentAisleName) {
                             currentAisleName = item.aisle.name;
                             if (aisles[currentAisleName] === undefined) {
@@ -117,7 +128,7 @@
                 },
                 favoriteItems() {
                     let favorites = [];
-                    this.availableItems.forEach(item => (item.favorite) ? favorites.push(item) : false);
+                    this.items.forEach(item => (item.favorite) ? favorites.push(item) : false);
 
                     return favorites;
                 },

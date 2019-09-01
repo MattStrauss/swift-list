@@ -1940,7 +1940,7 @@ __webpack_require__.r(__webpack_exports__);
       this.arrowCounter = -1;
       this.isOpen = false;
     },
-    onArrowDown: function onArrowDown(evt) {
+    onArrowDown: function onArrowDown() {
       if (this.arrowCounter < this.results.length) {
         this.arrowCounter = this.arrowCounter + 1;
       }
@@ -1951,6 +1951,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     onEnter: function onEnter() {
+      if (this.arrowCounter < 0) {
+        this.arrowCounter = 0;
+      }
+
       this.setResult(this.results[this.arrowCounter]);
     },
     handleClickOutside: function handleClickOutside(evt) {
@@ -2464,6 +2468,11 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.recipe = response.data;
         _this.processing = false;
+
+        if (_this.action !== "Update") {
+          history.pushState('editing', 'Edit Recipe', '/recipes/' + _this.recipe.id + '/edit');
+        }
+
         _this.action = "Update";
         _this.success = flashSuccess;
         setTimeout(function () {
@@ -2577,6 +2586,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+//
+//
+//
 //
 //
 //
@@ -2659,6 +2679,21 @@ __webpack_require__.r(__webpack_exports__);
     showAislesToggle: function showAislesToggle() {
       this.showAisles = !this.showAisles;
     },
+    addFavoriteItemsToggle: function addFavoriteItemsToggle() {
+      var _this2 = this;
+
+      if (!this.favoriteItemsAllOnList) {
+        var _this$includedItems;
+
+        (_this$includedItems = this.includedItems).push.apply(_this$includedItems, _toConsumableArray(this.favoriteItemsNotOnList));
+
+        this.saveList();
+      } else {
+        this.favoriteItems.forEach(function (item) {
+          return _this2.includedItems.indexOf(item.id) ? _this2.deleteItem(null, item.id) : false;
+        });
+      }
+    },
     createOrEditItem: function createOrEditItem(item) {
       this.modalItemOpen = true;
 
@@ -2686,6 +2721,25 @@ __webpack_require__.r(__webpack_exports__);
         aisles["" + currentAisleName + ""].push(item);
       });
       return aisles;
+    },
+    favoriteItems: function favoriteItems() {
+      var favorites = [];
+      this.availableItems.forEach(function (item) {
+        return item.favorite ? favorites.push(item) : false;
+      });
+      return favorites;
+    },
+    favoriteItemsNotOnList: function favoriteItemsNotOnList() {
+      var _this3 = this;
+
+      return this.favoriteItems.filter(function (item) {
+        return !_this3.includedItems.find(function (included) {
+          return item.id === included.id;
+        });
+      });
+    },
+    favoriteItemsAllOnList: function favoriteItemsAllOnList() {
+      return this.favoriteItemsNotOnList.length === 0;
     }
   }
 });
@@ -2831,6 +2885,11 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.list = response.data;
         _this.processing = false;
+
+        if (_this.action !== "Update") {
+          history.pushState('editing', 'Edit Shopping List', '/shopping-lists/' + _this.list.id + '/edit');
+        }
+
         _this.action = "Update";
         _this.success = flashSuccess;
         setTimeout(function () {
@@ -40458,7 +40517,11 @@ var render = function() {
           "a",
           {
             staticClass: "item-delete-able toggle-aisles text-muted small",
-            on: { click: _vm.showAislesToggle }
+            on: {
+              click: function($event) {
+                return _vm.showAislesToggle()
+              }
+            }
           },
           [
             _c("i", {
@@ -40468,6 +40531,27 @@ var render = function() {
               }
             }),
             _vm._v(" Aisles\n        ")
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "item-delete-able toggle-aisles text-muted small",
+            on: {
+              click: function($event) {
+                return _vm.addFavoriteItemsToggle()
+              }
+            }
+          },
+          [
+            _c("i", {
+              class: {
+                "fas fa-times": this.favoriteItemsAllOnList,
+                "fas fa-plus": !this.favoriteItemsAllOnList
+              }
+            }),
+            _vm._v(" Favorite Items\n        ")
           ]
         )
       ]),

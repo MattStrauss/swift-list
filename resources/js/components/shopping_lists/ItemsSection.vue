@@ -4,8 +4,11 @@
             <a @click="createOrEditItem()" data-toggle="tooltip" title="Add item" class="cursor-pointer">
                 <i class="fas fa-plus-circle text-secondary add-able-icon"></i>
             </a>
-            <a @click="showAislesToggle" class="item-delete-able toggle-aisles text-muted small">
+            <a @click="showAislesToggle()" class="item-delete-able toggle-aisles text-muted small">
                 <i :class="{'fas fa-eye-slash': showAisles, 'fas fa-eye': ! showAisles}"></i> Aisles
+            </a>
+            <a @click="addFavoriteItemsToggle()" class="item-delete-able toggle-aisles text-muted small">
+                <i :class="{'fas fa-times': this.favoriteItemsAllOnList, 'fas fa-plus': ! this.favoriteItemsAllOnList}"></i> Favorite Items
             </a>
         </h6>
         <auto-complete :items="availableItems" :isAsync="false" :model="'item'" :placeHolder="'Search Items...'" @item-added="addItem"></auto-complete>
@@ -75,6 +78,14 @@
                 showAislesToggle() {
                     this.showAisles = ! this.showAisles;
                 },
+                addFavoriteItemsToggle () {
+                    if (! this.favoriteItemsAllOnList) {
+                        this.includedItems.push(...this.favoriteItemsNotOnList);
+                        this.saveList();
+                    } else {
+                        this.favoriteItems.forEach(item => (this.includedItems.indexOf(item.id)) ? this.deleteItem(null, item.id) : false);
+                    }
+                },
                 createOrEditItem(item) {
                     this.modalItemOpen = true;
                     if (item) {
@@ -82,7 +93,7 @@
                     }
                 },
                 saveList() {
-                    this.$emit('save-list')
+                    this.$emit('save-list');
                 }
             },
         computed:
@@ -103,6 +114,20 @@
                     });
 
                     return aisles;
+                },
+                favoriteItems() {
+                    let favorites = [];
+                    this.availableItems.forEach(item => (item.favorite) ? favorites.push(item) : false);
+
+                    return favorites;
+                },
+                favoriteItemsNotOnList() {
+                    return this.favoriteItems.filter(item => ! this.includedItems.find(function(included) {
+                        return item.id === included.id
+                    }));
+                },
+                favoriteItemsAllOnList() {
+                    return this.favoriteItemsNotOnList.length === 0;
                 },
             },
     }

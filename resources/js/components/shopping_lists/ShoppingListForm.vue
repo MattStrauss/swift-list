@@ -79,6 +79,9 @@
                     }).then(response => {
                         this.list = response.data;
                         this.processing = false;
+                        if (this.action !== "Update") {
+                            history.pushState('editing', 'Edit Shopping List', '/shopping-lists/'+ this.list.id +'/edit');
+                        }
                         this.action = "Update";
                         this.success = flashSuccess;
                         setTimeout(() => {this.success = false;}, 2000);

@@ -109,6 +109,9 @@
                 }).then(response => {
                     this.recipe = response.data;
                     this.processing = false;
+                    if (this.action !== "Update") {
+                        history.pushState('editing', 'Edit Recipe', '/recipes/'+ this.recipe.id +'/edit');
+                    }
                     this.action = "Update";
                     this.success = flashSuccess;
                     setTimeout(() => {this.success = false;}, 2000);

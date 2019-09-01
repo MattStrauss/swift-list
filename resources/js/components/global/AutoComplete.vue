@@ -98,7 +98,7 @@
                 this.arrowCounter = -1;
                 this.isOpen = false;
             },
-            onArrowDown(evt) {
+            onArrowDown() {
                 if (this.arrowCounter < this.results.length) {
                     this.arrowCounter = this.arrowCounter + 1;
                 }
@@ -109,6 +109,7 @@
                 }
             },
             onEnter() {
+                if (this.arrowCounter < 0) { this.arrowCounter = 0; }
                 this.setResult(this.results[this.arrowCounter]);
             },
             handleClickOutside(evt) {

@@ -1879,14 +1879,14 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       var _this = this;
 
-      axios.post('/aisles/', this.aisles).then(function (response) {//
+      axios.post('/aisles/', this.aisles).then(function (response) {
+        _this.success = true;
+        setTimeout(function () {
+          _this.success = false;
+        }, 2000);
       })["catch"](function (error) {
         _this.error = error.response.data.error;
       });
-      this.success = true;
-      setTimeout(function () {
-        _this.success = false;
-      }, 2000);
     }
   },
   computed: {}

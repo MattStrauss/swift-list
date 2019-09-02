@@ -26,7 +26,7 @@ class AisleController extends Controller
      */
     public function index()
     {
-        $aisles = Aisle::all();
+        $aisles = Aisle::withCustomOrder(Auth::user());
 
         return view('aisles.index', compact('aisles'));
     }
@@ -42,10 +42,10 @@ class AisleController extends Controller
     {
         $updatedAisles = collect($request->all())->pluck('id');
         $user = Auth::user();
-        $user->aisles = $updatedAisles;
+        $user->aisle_order = $updatedAisles;
         $user->save();
 
-        return view('aisles.index', compact('aisles'));
+        return response()->json(null, 200);
     }
 
 }

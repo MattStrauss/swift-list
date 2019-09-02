@@ -38,12 +38,11 @@
             {
                 submit() {
                 axios.post('/aisles/', this.aisles).then(response => {
-                    //
+                    this.success = true;
+                    setTimeout(() => {this.success = false;}, 2000);
                 }).catch(error => {
                     this.error = error.response.data.error;
                 });
-                this.success = true;
-                setTimeout(() => {this.success = false;}, 2000);
                 },
             },
         computed:

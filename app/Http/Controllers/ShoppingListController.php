@@ -127,7 +127,7 @@ class ShoppingListController extends Controller
 
         $recipes = $user->recipes()->with(['category'])->get();
         $items = $user->items()->with(['aisle'])->get();
-        $aisles = Aisle::all();
+        $aisles = Aisle::withCustomOrder($user);
 
         return view('shopping-lists.edit', compact('recipes', 'items', 'aisles', 'shopping_list'));
     }

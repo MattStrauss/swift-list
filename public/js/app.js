@@ -7444,7 +7444,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nli:hover {cursor: move;}\n", ""]);
+exports.push([module.i, "\n.aisles-li:hover {cursor: move;}\n", ""]);
 
 // exports
 
@@ -41795,7 +41795,7 @@ var render = function() {
               _vm._l(_vm.aisles, function(aisle, index) {
                 return _c(
                   "li",
-                  { key: aisle.id, staticClass: "list-group-item" },
+                  { key: aisle.id, staticClass: "list-group-item aisles-li" },
                   [
                     _c("span", { staticClass: "badge badge-secondary" }, [
                       _vm._v(_vm._s(index + 1))

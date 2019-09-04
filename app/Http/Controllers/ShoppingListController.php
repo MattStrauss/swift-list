@@ -111,6 +111,12 @@ class ShoppingListController extends Controller
             }
         });
 
+        if ($aisle_order = Auth::user()->aisle_order) {
+            $items = $items->sortBy(function ($value, $key) use ($aisle_order) {
+                return array_search($key, $aisle_order);
+            });
+        }
+
         return view('shopping-lists.show', compact('shopping_list', 'items'));
     }
 

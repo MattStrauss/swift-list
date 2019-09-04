@@ -11,7 +11,7 @@
             <div>
                 <ul class="list-group list-group-flush">
                     <draggable v-model="aisles" @update="submit">
-                        <li v-for="(aisle, index) in aisles" :key="aisle.id" class="list-group-item"> <span class="badge badge-secondary">{{index + 1}}</span> {{aisle.name}}</li>
+                        <li v-for="(aisle, index) in aisles" :key="aisle.id" class="list-group-item aisles-li"> <span class="badge badge-secondary">{{index + 1}}</span> {{aisle.name}}</li>
                     </draggable>
                 </ul>
                 <br><br>
@@ -53,5 +53,5 @@
 </script>
 
 <style>
-    li:hover {cursor: move;}
+    .aisles-li:hover {cursor: move;}
 </style>

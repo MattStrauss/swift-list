@@ -38,7 +38,7 @@ class Item extends Model
 
 
     /**
-     * An Item belongs to one Aisle
+     * An Item belongs to one User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -48,7 +48,7 @@ class Item extends Model
     }
 
     /**
-     * A Recipe has many ShoppingLists
+     * An Item has many ShoppingLists
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

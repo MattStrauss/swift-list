@@ -61,7 +61,7 @@ class User extends Authenticatable
     }
 
     /**
-     * A ShoppingList has many Recipes
+     * A User has many ShoppingLists
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

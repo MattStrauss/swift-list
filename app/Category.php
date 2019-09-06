@@ -17,7 +17,7 @@ class Category extends Model
 
 
     /**
-     * A Recipe belongs to one User
+     * A Category has many Recipes
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

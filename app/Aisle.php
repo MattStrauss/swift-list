@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Aisle extends Model
 {
@@ -30,5 +31,41 @@ class Aisle extends Model
         }
 
         return $aisles;
+    }
+
+    /**
+     * If the user has set a custom aisle order, apply it to the items ordering
+     *
+     * @param $items
+     *
+     * @return mixed
+     */
+    public static function applyCustomAisleOrder($items)
+    {
+        if ($aisle_order = Auth::user()->aisle_order) {
+            $items = $items->sortBy(function ($value, $key) use ($aisle_order) {
+                return array_search($key, $aisle_order);
+            });
+        }
+
+        return $items;
+    }
+
+    /**
+     * If the user has set a custom aisle order, apply it to the items ordering, customized for Javascript rendering
+     *
+     * @param $items
+     *
+     * @return mixed
+     */
+    public static function applyCustomAisleOrderForJavascriptRendering($items)
+    {
+        if ($aisle_order = Auth::user()->aisle_order) {
+            $items = $items->sortBy(function ($value) use ($aisle_order) {
+                return array_search($value->aisle_id, $aisle_order);
+            })->values()->all();
+        }
+
+        return $items;
     }
 }

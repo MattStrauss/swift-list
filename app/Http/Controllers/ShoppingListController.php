@@ -126,26 +126,7 @@ class ShoppingListController extends Controller
             }
         });
 
-        $items = $this->applyCustomAisleOrder($items);
-
-        return $items;
-    }
-
-    /**
-     * If the user has set a custom aisle order, apply it to the items ordering
-     *
-     * @param $aisle_order
-     * @param $items
-     *
-     * @return mixed
-     */
-    private function applyCustomAisleOrder($items)
-    {
-        if ($aisle_order = Auth::user()->aisle_order) {
-            $items = $items->sortBy(function ($value, $key) use ($aisle_order) {
-                return array_search($key, $aisle_order);
-            });
-        }
+        $items = Aisle::applyCustomAisleOrder($items);
 
         return $items;
     }
@@ -163,29 +144,10 @@ class ShoppingListController extends Controller
 
         $recipes = $user->recipes()->with(['category'])->get();
         $items = $user->items()->with(['aisle'])->get();
-        $items = $this->applyCustomAisleOrderForJavascriptRendering($items);
+        $items = Aisle::applyCustomAisleOrderForJavascriptRendering($items);
         $aisles = Aisle::withCustomOrder($user);
 
         return view('shopping-lists.edit', compact('recipes', 'items', 'aisles', 'shopping_list'));
-    }
-
-    /**
-     * If the user has set a custom aisle order, apply it to the items ordering, customized for Javascript rendering
-     *
-     * @param $aisle_order
-     * @param $items
-     *
-     * @return mixed
-     */
-    private function applyCustomAisleOrderForJavascriptRendering($items)
-    {
-        if ($aisle_order = Auth::user()->aisle_order) {
-            $items = $items->sortBy(function ($value) use ($aisle_order) {
-                return array_search($value->aisle_id, $aisle_order);
-            })->values()->all();
-        }
-
-        return $items;
     }
 
     /**

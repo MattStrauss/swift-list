@@ -31,28 +31,9 @@ class ItemController extends Controller
         $user = Auth::user();
         $items = $user->items()->with(['aisle'])->get();
         $aisles = Aisle::withCustomOrder($user);
-        $items = $this->applyCustomAisleOrder($items);
+        $items = Aisle::applyCustomAisleOrderForJavascriptRendering($items);
 
         return view('items.index', compact('items', 'aisles'));
-    }
-
-    /**
-     * If the user has set a custom aisle order, apply it to the items ordering
-     *
-     * @param $aisle_order
-     * @param $items
-     *
-     * @return mixed
-     */
-    private function applyCustomAisleOrder($items)
-    {
-        if ($aisle_order = Auth::user()->aisle_order) {
-            $items = $items->sortBy(function ($item) use ($aisle_order) {
-                return array_search($item->aisle_id, $aisle_order);
-            })->values()->all();
-        }
-
-        return $items;
     }
 
     /**

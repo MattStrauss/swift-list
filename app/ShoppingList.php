@@ -37,7 +37,7 @@ class ShoppingList extends Model
     }
 
     /**
-     * A ShoppingList has many Recipes
+     * A ShoppingList belongs to one User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

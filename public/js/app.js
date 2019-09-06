@@ -2809,6 +2809,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
       return favorites;
     },
+    favoriteItemsNotEmpty: function favoriteItemsNotEmpty() {
+      return this.favoriteItems.length > 0;
+    },
     favoriteItemsNotOnList: function favoriteItemsNotOnList() {
       var _this3 = this;
 
@@ -43232,26 +43235,28 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "item-delete-able toggle-aisles text-muted small",
-            on: {
-              click: function($event) {
-                return _vm.addFavoriteItemsToggle()
-              }
-            }
-          },
-          [
-            _c("i", {
-              class: {
-                "fas fa-times": this.favoriteItemsAllOnList,
-                "fas fa-plus": !this.favoriteItemsAllOnList
-              }
-            }),
-            _vm._v(" Favorite Items\n        ")
-          ]
-        )
+        this.favoriteItemsNotEmpty
+          ? _c(
+              "a",
+              {
+                staticClass: "item-delete-able toggle-aisles text-muted small",
+                on: {
+                  click: function($event) {
+                    return _vm.addFavoriteItemsToggle()
+                  }
+                }
+              },
+              [
+                _c("i", {
+                  class: {
+                    "fas fa-times": this.favoriteItemsAllOnList,
+                    "fas fa-plus": !this.favoriteItemsAllOnList
+                  }
+                }),
+                _vm._v(" Favorite Items\n        ")
+              ]
+            )
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("auto-complete", {

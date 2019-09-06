@@ -29,8 +29,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Auth::user()->items()->with(['aisle'])->get();
-        $aisles = Aisle::all();
+        $user = Auth::user();
+        $items = $user->items()->with(['aisle'])->get();
+        $aisles = Aisle::withCustomOrder($user);
 
         return view('items.index', compact('items', 'aisles'));
     }

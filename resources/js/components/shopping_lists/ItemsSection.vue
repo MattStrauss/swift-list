@@ -7,7 +7,7 @@
             <a @click="showAislesToggle()" class="item-delete-able toggle-aisles text-muted small">
                 <i :class="{'fas fa-eye-slash': showAisles, 'fas fa-eye': ! showAisles}"></i> Aisles
             </a>
-            <a @click="addFavoriteItemsToggle()" class="item-delete-able toggle-aisles text-muted small">
+            <a v-if="this.favoriteItemsNotEmpty" @click="addFavoriteItemsToggle()" class="item-delete-able toggle-aisles text-muted small">
                 <i :class="{'fas fa-times': this.favoriteItemsAllOnList, 'fas fa-plus': ! this.favoriteItemsAllOnList}"></i> Favorite Items
             </a>
         </h6>
@@ -131,6 +131,9 @@
                     this.items.forEach(item => (item.favorite) ? favorites.push(item) : false);
 
                     return favorites;
+                },
+                favoriteItemsNotEmpty() {
+                    return this.favoriteItems.length > 0;
                 },
                 favoriteItemsNotOnList() {
                     return this.favoriteItems.filter(item => ! this.includedItems.find(function(included) {

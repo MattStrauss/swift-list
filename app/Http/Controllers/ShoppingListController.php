@@ -46,7 +46,7 @@ class ShoppingListController extends Controller
 
         $recipes = $user->recipes()->with(['category'])->get();
         $items = $user->items()->with(['aisle'])->get();
-        $aisles = Aisle::all();
+        $aisles = Aisle::withCustomOrder($user);
         $shopping_list = ['id' => '', 'name' => Carbon::now()->format("l, M jS"). " List"];
 
         return view('shopping-lists.create', compact('recipes', 'items', 'aisles', 'shopping_list'));
@@ -95,11 +95,26 @@ class ShoppingListController extends Controller
         $listItems = $shopping_list->items;
 
         $recipeItems = collect();
-
         $shopping_list->recipes->each(function ($recipe) use ($recipeItems) {
             $recipeItems->push($recipe->items);
         });
 
+        $items = $this->combineListAndRecipeItems($recipeItems, $listItems);
+
+        return view('shopping-lists.show', compact('shopping_list', 'items'));
+    }
+
+    /**
+     * Combine items and recipe items into single collection grouped by aisle
+     * If the user has set a custom aisle order, apply it to the items ordering
+     *
+     * @param $recipeItems
+     * @param $listItems
+     *
+     * @return mixed
+     */
+    private function combineListAndRecipeItems($recipeItems, $listItems)
+    {
         $items = $recipeItems->push($listItems)->collapse()->groupBy('aisle_id')->each(function($aisle) {
 
             $aisleDuplicates = $aisle->duplicates('name');
@@ -111,13 +126,26 @@ class ShoppingListController extends Controller
             }
         });
 
-        if ($aisle_order = Auth::user()->aisle_order) {
-            $items = $items->sortBy(function ($value, $key) use ($aisle_order) {
-                return array_search($key, $aisle_order);
-            });
-        }
+        if ($aisle_order = Auth::user()->aisle_order) { $items = $this->applyCustomAisleOrder($aisle_order, $items); }
 
-        return view('shopping-lists.show', compact('shopping_list', 'items'));
+        return $items;
+    }
+
+    /**
+     * If the user has set a custom aisle order, apply it to the items ordering
+     *
+     * @param $aisle_order
+     * @param $items
+     *
+     * @return mixed
+     */
+    private function applyCustomAisleOrder($aisle_order, $items)
+    {
+        $items = $items->sortBy(function ($value, $key) use ($aisle_order) {
+            return array_search($key, $aisle_order);
+        });
+
+        return $items;
     }
 
     /**

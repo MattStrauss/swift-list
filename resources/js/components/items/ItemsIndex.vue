@@ -63,7 +63,7 @@
 
 <script>
     export default {
-        props: ['initialAvailableItems', 'aisles', 'initialFavoriteItems'],
+        props: ['initialAvailableItems', 'aisles', 'customAisleOrder'],
         data() {
             return {
                 items: this.initialAvailableItems,
@@ -71,7 +71,6 @@
                 modalConfirmDeleteOpen: false,
                 success: false,
                 itemBeingDeleted: {id: 0, name: null},
-                favorites: this.initialFavoriteItems,
                 error: '',
             }
         },

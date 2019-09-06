@@ -2181,7 +2181,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialAvailableItems', 'aisles', 'initialFavoriteItems'],
+  props: ['initialAvailableItems', 'aisles', 'customAisleOrder'],
   data: function data() {
     return {
       items: this.initialAvailableItems,
@@ -2192,7 +2192,6 @@ __webpack_require__.r(__webpack_exports__);
         id: 0,
         name: null
       },
-      favorites: this.initialFavoriteItems,
       error: ''
     };
   },

@@ -42,11 +42,13 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        $aisles = Aisle::all();
+        $user = Auth::user();
+
+        $aisles = Aisle::withCustomOrder($user);
 
         $categories = Category::all();
 
-        $availableItems = Auth::user()->items()->with(['aisle'])->get();
+        $availableItems = $user->items()->with(['aisle'])->get();
 
         return view('recipes.create', compact('categories', 'aisles', 'availableItems'));
     }
@@ -74,7 +76,6 @@ class RecipeController extends Controller
         $recipe->items()->sync($items);
 
         session()->flash('status', ['type' => 'primary', 'message' => 'Recipe successfully created'] );
-        $redirect =  ['redirect' => route('recipes.index')];
 
         return response()->json($recipe, 200);
     }
@@ -104,11 +105,13 @@ class RecipeController extends Controller
     {
         $items = $recipe->items()->with(['aisle'])->get();
 
-        $aisles = Aisle::all();
+        $user = Auth::user();
+
+        $aisles = Aisle::withCustomOrder($user);
 
         $categories = Category::all();
 
-        $availableItems = Auth::user()->items()->with(['aisle'])->get();
+        $availableItems = $user->items()->with(['aisle'])->get();
 
         return view('recipes.edit', compact('recipe', 'items', 'categories', 'aisles', 'availableItems'));
     }

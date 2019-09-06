@@ -21,7 +21,6 @@ class ItemController extends Controller
         $this->authorizeResource(Item::class, 'item');
     }
 
-
     /**
      * Display a listing of the resource.
      *

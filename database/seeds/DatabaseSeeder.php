@@ -21,9 +21,20 @@ class DatabaseSeeder extends Seeder
         $matt = factory(User::class)->create(['email' => 'matt@example.com', 'password' => bcrypt('password'), 'name' => 'Matt']);
         $karen = factory(User::class)->create(['email' => 'karen@example.com', 'password' => bcrypt('password'), 'name' => 'Karen']);
 
-        factory(Category::class, 12)->create();
-        factory(Aisle::class, 18)->create();
+        $categoriesNames = ['Chicken', 'Beef', 'Mexican', 'Italian', 'Asian', 'Pork', 'Soup', 'Dessert', 'Turkey', 'Lamb', 'Side Dish', 'Seafood', 'Other', 'Vegetarian', 'Snack'];
+        foreach ($categoriesNames as $name) {
+            factory(Category::class)->create(['name' => $name]);
+        }
 
+        $aisleNames = [
+            'Fruits & Vegetables', 'Breakfast Items', 'Meats', 'Seafood', 'Frozen Meats', 'Frozen Entrees', 'Frozen Breakfast', 'Frozen Dessert', 'Frozen Vegetables', 'Frozen Potatoes',
+            'Baby Products', 'Noodles and Rice', 'Pasta Items', 'Pet Supplies', 'Baking', 'Cookies and Crackers', 'Chips and Nuts', 'Bakery', 'Breads and Croutons', 'Canned Goods',
+            'Soups and Broth', 'Jars and Spreads', 'Dairy', 'Spices', 'Condiments', 'Drinks', 'Refrigerated Drinks', 'Juices', 'Paper Products', 'Coffee and Tea', 'International Foods',
+            'Cleaning Supplies', 'Laundry', 'Personal Care', 'Medicine and Vitamins', 'Deli', 'Misc Items'
+        ];
+        foreach ($aisleNames as $name) {
+            factory(Aisle::class)->create(['name' => $name]);
+        }
 
         for ($i=1; $i < 15; $i++) {
 

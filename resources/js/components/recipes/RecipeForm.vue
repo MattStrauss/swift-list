@@ -12,7 +12,7 @@
         <form style="margin:2%;" @submit.prevent="submit" autocomplete="off">
             <div class="form-group">
                 <label for="name">Recipe Name</label>
-                <input type="text" class="form-control" name="name" id="name" v-model="recipe.name">
+                <input type="text" class="form-control" name="name" id="name" v-model="recipe.name" autofocus>
                 <div v-if="errors && errors.name" class="text-danger">{{ errors.name[0] }}</div>
             </div>
             <div class="form-group">

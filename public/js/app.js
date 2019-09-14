@@ -42518,7 +42518,12 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text", name: "name", id: "name" },
+                    attrs: {
+                      type: "text",
+                      name: "name",
+                      id: "name",
+                      autofocus: ""
+                    },
                     domProps: { value: _vm.item.name },
                     on: {
                       input: function($event) {
@@ -42759,7 +42764,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "text", name: "name", id: "name" },
+            attrs: { type: "text", name: "name", id: "name", autofocus: "" },
             domProps: { value: _vm.recipe.name },
             on: {
               input: function($event) {

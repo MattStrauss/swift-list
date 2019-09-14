@@ -19,7 +19,7 @@
                             </div>
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" v-model="item.name">
+                                    <input type="text" class="form-control" name="name" id="name" v-model="item.name" autofocus>
                                     <div v-if="errors && errors.name" class="text-danger">{{ errors.name[0] }}</div>
                                 </div>
 

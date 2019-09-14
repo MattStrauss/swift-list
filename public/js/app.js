@@ -2373,6 +2373,8 @@ __webpack_require__.r(__webpack_exports__);
         if (_this.action === "Add") {
           _this.clearItemDetails(false);
 
+          _this.$refs.name.focus();
+
           Event.$emit('item-added', response.data);
         } else {
           Event.$emit('item-edited', response.data);
@@ -42517,6 +42519,7 @@ var render = function() {
                         expression: "item.name"
                       }
                     ],
+                    ref: "name",
                     staticClass: "form-control",
                     attrs: {
                       type: "text",

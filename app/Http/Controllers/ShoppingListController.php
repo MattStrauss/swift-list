@@ -46,6 +46,7 @@ class ShoppingListController extends Controller
 
         $recipes = $user->recipes()->with(['category'])->get();
         $items = $user->items()->with(['aisle'])->get();
+        $items = Aisle::applyCustomAisleOrderForJavascriptRendering($items);
         $aisles = Aisle::withCustomOrder($user);
         $shopping_list = ['id' => '', 'name' => Carbon::now()->format("l, M jS"). " List"];
 

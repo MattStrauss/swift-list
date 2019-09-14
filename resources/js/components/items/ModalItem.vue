@@ -19,7 +19,7 @@
                             </div>
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" v-model="item.name" autofocus>
+                                    <input type="text" class="form-control" ref="name" name="name" id="name" v-model="item.name" autofocus>
                                     <div v-if="errors && errors.name" class="text-danger">{{ errors.name[0] }}</div>
                                 </div>
 
@@ -89,6 +89,7 @@
                     setTimeout(() => {this.success = false;}, 2000);
                     if (this.action === "Add") {
                         this.clearItemDetails(false);
+                        this.$refs.name.focus();
                         Event.$emit('item-added', response.data);
                     } else {
                         Event.$emit('item-edited', response.data);

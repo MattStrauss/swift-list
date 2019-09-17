@@ -7,6 +7,7 @@ use App\ShoppingList;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Collection;
 
 class ShoppingListController extends Controller
 {
@@ -112,19 +113,22 @@ class ShoppingListController extends Controller
      * @param $recipeItems
      * @param $listItems
      *
-     * @return mixed
+     * @return Collection
      */
     private function combineListAndRecipeItems($recipeItems, $listItems)
     {
-        $items = $recipeItems->push($listItems)->collapse()->groupBy('aisle_id')->each(function($aisle) {
+        $items = $recipeItems->push($listItems)->collapse()->groupBy('aisle_id')->each(function ($aisle) {
 
             $aisleDuplicates = $aisle->duplicates('name');
             $occurrenceCounts = array_count_values($aisleDuplicates->toArray());
-            $aisle->forget($aisleDuplicates->keys()->toArray());
 
-            foreach ($aisleDuplicates as $duplicate) {
-                $aisle[array_search($duplicate, array_column($aisle->toArray(), 'name'))]->name = $duplicate . ' ('. (1 + $occurrenceCounts[$duplicate]).')';
-            }
+            $aisle->forget($aisleDuplicates->keys()->toArray())->each(function ($item) use ($aisleDuplicates, $occurrenceCounts){
+                if (in_array($item->name, $aisleDuplicates->toArray())) {
+                    $item->name = $item->name . ' ('. (1 + $occurrenceCounts[$item->name]).')';
+                }
+
+                return $item;
+            });
         });
 
         $items = Aisle::applyCustomAisleOrder($items);

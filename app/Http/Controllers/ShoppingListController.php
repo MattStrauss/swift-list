@@ -59,7 +59,7 @@ class ShoppingListController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
@@ -161,7 +161,7 @@ class ShoppingListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  ShoppingList  $shopping_list
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, ShoppingList $shopping_list)

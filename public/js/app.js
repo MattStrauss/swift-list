@@ -43324,7 +43324,9 @@ var render = function() {
                 _vm._l(items, function(item, index) {
                   return index !== 0
                     ? _c("li", { staticClass: "list-group-item" }, [
-                        !_vm.includedItems.includes(item)
+                        !_vm.includedItems.find(function(included) {
+                          return included.id === item.id
+                        })
                           ? _c("span", [
                               _c(
                                 "span",

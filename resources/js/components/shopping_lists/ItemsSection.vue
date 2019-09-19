@@ -20,7 +20,7 @@
                 </a>
                 <ul class="list-group list-group-flush collapse" :id="'_'+ items[0]">
                     <li v-if="index !== 0" v-for="(item, index) in items" class="list-group-item">
-                        <span v-if="! includedItems.includes(item)">
+                        <span v-if="! includedItems.find(included => included.id === item.id)">
                             <span @click="addItem(item)" class="item-add-able">
                                 <i class="fa fa-plus fa-fw add-able-icon"></i> {{item.name}}
                             </span>

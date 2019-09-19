@@ -124,6 +124,8 @@
 
                     });
 
+                    Object.keys(aisles).forEach(item => aisles[item].sort((a, b) => (a.name < b.name) ? -1 : 1));
+
                     return aisles;
                 },
                 favoriteItems() {

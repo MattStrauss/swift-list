@@ -2259,6 +2259,11 @@ __webpack_require__.r(__webpack_exports__);
 
         aisles["" + currentAisleName + ""].push(item);
       });
+      Object.keys(aisles).forEach(function (item) {
+        return aisles[item].sort(function (a, b) {
+          return a.name < b.name ? -1 : 1;
+        });
+      });
       return aisles;
     }
   }
@@ -2800,6 +2805,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         }
 
         aisles["" + currentAisleName + ""].push(item);
+      });
+      Object.keys(aisles).forEach(function (item) {
+        return aisles[item].sort(function (a, b) {
+          return a.name < b.name ? -1 : 1;
+        });
       });
       return aisles;
     },

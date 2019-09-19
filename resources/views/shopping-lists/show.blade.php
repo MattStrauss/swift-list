@@ -13,7 +13,7 @@
 
                     <div class="card-body">
                         <h4> Recipes <small><small>({{ $shopping_list->recipes->count() }})</small></small></h4>
-                        <ul class="items">
+                        <ul class="items recipe-items">
                             @foreach($shopping_list->recipes as $recipe)
 
                                 <a href="/recipes/{{$recipe->id}}"><li class="item">{{$recipe->name}}</li></a>

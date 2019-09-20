@@ -51,16 +51,9 @@ class ItemController extends Controller
             'aisle_id' => 'required',
         ]);
 
-        $user = Auth::user();
-        $name = $request->input('name');
-        $aisle_id = $request->input('aisle_id');
-
-        $item = Item::with('aisle')->where('name', $name)->where('user_id', $user->id)->where('aisle_id', $aisle_id)->first();
-        if (! $item ){
-            $item = Item::create(['name' => $name, 'aisle_id' => $aisle_id, 'user_id' => $user->id]);
-
-            $item = Item::with('aisle')->find($item->id);
-        }
+        $item = Item::with('aisle')->firstOrCreate(
+            ['user_id'=> Auth::user()->id, 'name' => $request->input('name'), 'aisle_id' => $request->input('aisle_id')]
+        );
 
         return response()->json($item, 200);
     }

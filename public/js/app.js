@@ -2376,7 +2376,7 @@ __webpack_require__.r(__webpack_exports__);
         }, 2000);
 
         if (_this.action === "Add") {
-          _this.clearItemDetails(false);
+          _this.clearItemDetails();
 
           _this.$refs.name.focus();
 
@@ -2397,7 +2397,8 @@ __webpack_require__.r(__webpack_exports__);
       this.item.aisle_id = item.aisle.id;
       this.item.id = item.id;
     },
-    clearItemDetails: function clearItemDetails(closeModal) {
+    clearItemDetails: function clearItemDetails() {
+      var closeModal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       this.item['name'] = "";
       this.item['aisle_id'] = "";
       this.item['id'] = "";
@@ -42471,7 +42472,7 @@ var render = function() {
                     attrs: { type: "button", "aria-label": "Close" },
                     on: {
                       click: function($event) {
-                        return _vm.clearItemDetails(true)
+                        return _vm.clearItemDetails("AndCloseModal")
                       }
                     }
                   },
@@ -42644,7 +42645,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.clearItemDetails(true)
+                        _vm.clearItemDetails("AndCloseModal")
                       }
                     }
                   },

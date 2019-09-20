@@ -6,7 +6,7 @@
                     <form style="margin:2%;" @submit.prevent="submit" autocomplete="off">
                         <div class="modal-header">
                             <h5 class="modal-title">{{action}} Item</h5>
-                            <button @click="clearItemDetails(true)" type="button" class="close" aria-label="Close">
+                            <button @click="clearItemDetails('AndCloseModal')" type="button" class="close" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -38,7 +38,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" @click="clearItemDetails(true)">Cancel</button>
+                            <button type="button" class="btn btn-outline-secondary" @click="clearItemDetails(('AndCloseModal'))">Cancel</button>
                             <button @click="submit" type="button" class="btn btn-outline-primary">
                                 <span v-show="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{action}}
@@ -88,7 +88,7 @@
                     this.success = true;
                     setTimeout(() => {this.success = false;}, 2000);
                     if (this.action === "Add") {
-                        this.clearItemDetails(false);
+                        this.clearItemDetails();
                         this.$refs.name.focus();
                         Event.$emit('item-added', response.data);
                     } else {
@@ -107,7 +107,7 @@
                 this.item.aisle_id = item.aisle.id;
                 this.item.id = item.id;
             },
-            clearItemDetails(closeModal) {
+            clearItemDetails(closeModal = false) {
                 this.item['name'] = "";
                 this.item['aisle_id'] = "";
                 this.item['id'] = "";

@@ -11,7 +11,7 @@
                 <i :class="{'fas fa-times': this.favoriteItemsAllOnList, 'fas fa-plus': ! this.favoriteItemsAllOnList}"></i> Favorite Items
             </a>
         </h6>
-        <auto-complete :items="this.items" :isAsync="false" :model="'item'" :placeHolder="'Search Items...'" @item-added="addItem"></auto-complete>
+        <auto-complete :items="this.items" :isAsync="false" :model="'item'" :placeHolder="'Search Items...'" @item-added="addItem" @modal-item-open="modalItemOpen = true"></auto-complete>
 
         <div v-show="showAisles" class="col-sm-4 mb-4 float-left collapse show" v-for="(items, index) in this.itemsByAisle">
             <div class="card">

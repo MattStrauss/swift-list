@@ -1923,6 +1923,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     items: {
@@ -1985,18 +1988,10 @@ __webpack_require__.r(__webpack_exports__);
     filterResults: function filterResults() {
       var _this = this;
 
-      switch (this.model) {
-        case "recipe":
-          this.results = this.items.filter(function (item) {
-            return item.name.toLowerCase().indexOf(_this.search.toLowerCase()) > -1 || item.category.name.toLowerCase().indexOf(_this.search.toLowerCase()) > -1;
-          });
-          break;
-
-        default:
-          this.results = this.items.filter(function (item) {
-            return item.name.toLowerCase().indexOf(_this.search.toLowerCase()) > -1 || item.aisle.name.toLowerCase().indexOf(_this.search.toLowerCase()) > -1;
-          });
-      }
+      var secondarySearchTerm = this.model === "recipe" ? "category" : "aisle";
+      this.results = this.items.filter(function (item) {
+        return item.name.toLowerCase().indexOf(_this.search.toLowerCase()) > -1 || item[secondarySearchTerm].name.toLowerCase().indexOf(_this.search.toLowerCase()) > -1;
+      });
     },
     setResult: function setResult(result) {
       this.search = '';
@@ -2027,6 +2022,12 @@ __webpack_require__.r(__webpack_exports__);
         this.isOpen = false;
         this.arrowCounter = -1;
       }
+    },
+    addNewItem: function addNewItem() {
+      this.$emit('modal-item-open');
+      this.search = "";
+      this.arrowCounter = -1;
+      this.isOpen = false;
     }
   }
 });
@@ -41989,7 +41990,15 @@ var render = function() {
                   )
                 ]
               )
-            })
+            }),
+        _vm._v(" "),
+        this.results.length < 1 && this.model === "item" && !this.isLoading
+          ? _c("li", { staticClass: "autocomplete-result" }, [
+              _c("span", { on: { click: _vm.addNewItem } }, [
+                _vm._v("Add New item")
+              ])
+            ])
+          : _vm._e()
       ],
       2
     )
@@ -42931,7 +42940,10 @@ var render = function() {
                 model: "item",
                 placeHolder: "Search for ingredients..."
               },
-              on: { "item-added": _vm.addItem }
+              on: {
+                "item-added": _vm.addItem,
+                "modal-item-open": _vm.createOrEditItem
+              }
             }),
             _vm._v(" "),
             _c(
@@ -43295,7 +43307,12 @@ var render = function() {
           model: "item",
           placeHolder: "Search Items..."
         },
-        on: { "item-added": _vm.addItem }
+        on: {
+          "item-added": _vm.addItem,
+          "modal-item-open": function($event) {
+            _vm.modalItemOpen = true
+          }
+        }
       }),
       _vm._v(" "),
       _vm._l(this.itemsByAisle, function(items, index) {

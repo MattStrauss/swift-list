@@ -8,11 +8,14 @@
                    @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter" :placeholder="placeHolder">
         </div>
         <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results">
-            <li class="loading" v-if="isLoading">
+            <li v-if="isLoading" class="loading">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </li>
             <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" :class="{ 'is-active': i === arrowCounter }">
                 {{ result.name }} - {{(model === "recipe") ? result.category.name : result.aisle.name}}
+            </li>
+            <li v-if="this.results.length < 1 && this.model === 'item' && ! this.isLoading" class="autocomplete-result">
+                <span @click="addNewItem">Add New item</span>
             </li>
         </ul>
     </div>
@@ -78,18 +81,10 @@
             },
 
             filterResults() {
-                switch (this.model) {
-                    case "recipe":
-                        this.results = this.items.filter((item) => {
-                            return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1 || item.category.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
-                        });
-                    break;
-
-                    default:
-                        this.results = this.items.filter((item) => {
-                            return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1 || item.aisle.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
-                        });
-                }
+                let secondarySearchTerm = (this.model === "recipe") ? "category" : "aisle";
+                this.results = this.items.filter((item) => {
+                    return item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1 || item[secondarySearchTerm].name.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+                });
             },
             setResult(result) {
                 this.search = '';
@@ -117,6 +112,12 @@
                     this.isOpen = false;
                     this.arrowCounter = -1;
                 }
+            },
+            addNewItem() {
+                this.$emit('modal-item-open');
+                this.search = "";
+                this.arrowCounter = -1;
+                this.isOpen = false;
             }
         },
     };

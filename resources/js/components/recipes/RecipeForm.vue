@@ -36,7 +36,7 @@
                     <i class="fas fa-plus-circle fa-fw text-secondary"></i></a>
                 </label>
 
-                <auto-complete :items="this.availableItems" :isAsync="false" :model="'item'" :placeHolder="'Search for ingredients...'" @item-added="addItem"></auto-complete>
+                <auto-complete :items="this.availableItems" :isAsync="false" :model="'item'" :placeHolder="'Search for ingredients...'" @item-added="addItem" @modal-item-open="createOrEditItem"></auto-complete>
 
                 <ul class="list-group list-group-flush">
                     <li v-if="items.length < 1" class="list-group-item"> No ingredients... </li>

@@ -2258,6 +2258,7 @@ __webpack_require__.r(__webpack_exports__);
 
           if (aisles[currentAisleName] === undefined) {
             aisles["" + currentAisleName + ""] = [item.aisle.id];
+            aisles["" + currentAisleName + ""].shift(); // seems silly, but without the above line, I cannot get this to work as expected
           }
         }
 
@@ -2265,7 +2266,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       Object.keys(aisles).forEach(function (item) {
         return aisles[item].sort(function (a, b) {
-          return a.name < b.name ? -1 : 1;
+          return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;
         });
       });
       return aisles;
@@ -2748,6 +2749,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (this.includedItems.find(function (included) {
         return included.id === item.id;
       }) === undefined) {
+        this.items.push(item);
         this.includedItems.push(item);
         this.saveList();
       }
@@ -2814,6 +2816,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
           if (aisles[currentAisleName] === undefined) {
             aisles["" + currentAisleName + ""] = [item.aisle.id];
+            aisles["" + currentAisleName + ""].shift(); // seems silly, but without the above line, I cannot get this to work as expected
           }
         }
 
@@ -2821,7 +2824,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       });
       Object.keys(aisles).forEach(function (item) {
         return aisles[item].sort(function (a, b) {
-          return a.name < b.name ? -1 : 1;
+          return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;
         });
       });
       return aisles;
@@ -42264,7 +42267,7 @@ var render = function() {
                         staticClass: "card-header no-style-anchor",
                         attrs: {
                           "data-toggle": "collapse",
-                          href: "#_" + items[0]
+                          href: "#_" + items[0].aisle_id
                         }
                       },
                       [
@@ -42280,62 +42283,58 @@ var render = function() {
                       "ul",
                       {
                         staticClass: "list-group list-group-flush collapse",
-                        attrs: { id: "_" + items[0] }
+                        attrs: { id: "_" + items[0].aisle_id }
                       },
                       _vm._l(items, function(item, index) {
-                        return index !== 0
-                          ? _c("li", { staticClass: "list-group-item" }, [
-                              _c("span", { staticClass: "aisle-item" }, [
-                                item.favorite
-                                  ? _c("i", {
-                                      staticClass:
-                                        "fas fa-star fa-fw text-warning",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.updateFavoriteStatus(
-                                            item,
-                                            false
-                                          )
-                                        }
-                                      }
-                                    })
-                                  : _c("i", {
-                                      staticClass: "far fa-star fa-fw",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.updateFavoriteStatus(
-                                            item,
-                                            true
-                                          )
-                                        }
-                                      }
-                                    }),
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(item.name) +
-                                    "\n                                "
-                                ),
-                                _c("i", {
-                                  staticClass: "fas fa-edit fa-fw",
+                        return _c("li", { staticClass: "list-group-item" }, [
+                          _c("span", { staticClass: "aisle-item" }, [
+                            item.favorite
+                              ? _c("i", {
+                                  staticClass: "fas fa-star fa-fw text-warning",
                                   on: {
                                     click: function($event) {
-                                      return _vm.createOrEditItem(item)
-                                    }
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c("i", {
-                                  staticClass:
-                                    "fas fa-trash-alt fa-fw text-danger",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deleteItemModal(item)
+                                      return _vm.updateFavoriteStatus(
+                                        item,
+                                        false
+                                      )
                                     }
                                   }
                                 })
-                              ])
-                            ])
-                          : _vm._e()
+                              : _c("i", {
+                                  staticClass: "far fa-star fa-fw",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.updateFavoriteStatus(
+                                        item,
+                                        true
+                                      )
+                                    }
+                                  }
+                                }),
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(item.name) +
+                                "\n                                "
+                            ),
+                            _c("i", {
+                              staticClass: "fas fa-edit fa-fw",
+                              on: {
+                                click: function($event) {
+                                  return _vm.createOrEditItem(item)
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("i", {
+                              staticClass: "fas fa-trash-alt fa-fw text-danger",
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteItemModal(item)
+                                }
+                              }
+                            })
+                          ])
+                        ])
                       }),
                       0
                     )
@@ -43319,7 +43318,10 @@ var render = function() {
                 "a",
                 {
                   staticClass: "card-header no-style-anchor",
-                  attrs: { "data-toggle": "collapse", href: "#_" + items[0] }
+                  attrs: {
+                    "data-toggle": "collapse",
+                    href: "#_" + items[0].aisle_id
+                  }
                 },
                 [
                   _vm._v(
@@ -43332,68 +43334,59 @@ var render = function() {
                 "ul",
                 {
                   staticClass: "list-group list-group-flush collapse",
-                  attrs: { id: "_" + items[0] }
+                  attrs: { id: "_" + items[0].aisle_id }
                 },
                 _vm._l(items, function(item, index) {
-                  return index !== 0
-                    ? _c("li", { staticClass: "list-group-item" }, [
-                        !_vm.includedItems.find(function(included) {
-                          return included.id === item.id
-                        })
-                          ? _c("span", [
-                              _c(
-                                "span",
-                                {
-                                  staticClass: "item-add-able",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.addItem(item)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass:
-                                      "fa fa-plus fa-fw add-able-icon"
-                                  }),
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(item.name) +
-                                      "\n                        "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c("i", {
-                                staticClass: "fas fa-edit fa-fw",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.createOrEditItem(item)
-                                  }
+                  return _c("li", { staticClass: "list-group-item" }, [
+                    !_vm.includedItems.find(function(included) {
+                      return included.id === item.id
+                    })
+                      ? _c("span", [
+                          _c(
+                            "span",
+                            {
+                              staticClass: "item-add-able",
+                              on: {
+                                click: function($event) {
+                                  return _vm.addItem(item)
                                 }
-                              })
-                            ])
-                          : _c(
-                              "span",
-                              { staticClass: "aisle-item-delete-able" },
-                              [
-                                _c("i", {
-                                  staticClass: "fa fa-times fa-fw",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.deleteItem(null, item.id)
-                                    }
-                                  }
-                                }),
-                                _vm._v(
-                                  " " +
-                                    _vm._s(item.name) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
-                      ])
-                    : _vm._e()
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-plus fa-fw add-able-icon"
+                              }),
+                              _vm._v(
+                                " " +
+                                  _vm._s(item.name) +
+                                  "\n                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("i", {
+                            staticClass: "fas fa-edit fa-fw",
+                            on: {
+                              click: function($event) {
+                                return _vm.createOrEditItem(item)
+                              }
+                            }
+                          })
+                        ])
+                      : _c("span", { staticClass: "aisle-item-delete-able" }, [
+                          _c("i", {
+                            staticClass: "fa fa-times fa-fw",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteItem(null, item.id)
+                              }
+                            }
+                          }),
+                          _vm._v(
+                            " " + _vm._s(item.name) + "\n                    "
+                          )
+                        ])
+                  ])
                 }),
                 0
               )

@@ -15,11 +15,11 @@
 
         <div v-show="showAisles" class="col-sm-4 mb-4 float-left collapse show" v-for="(items, index) in this.itemsByAisle">
             <div class="card">
-                <a class="card-header no-style-anchor" data-toggle="collapse" :href="'#_' + items[0]">
+                <a class="card-header no-style-anchor" data-toggle="collapse" :href="'#_' + items[0].aisle_id">
                     {{index}}
                 </a>
-                <ul class="list-group list-group-flush collapse" :id="'_'+ items[0]">
-                    <li v-if="index !== 0" v-for="(item, index) in items" class="list-group-item">
+                <ul class="list-group list-group-flush collapse" :id="'_'+ items[0].aisle_id">
+                    <li v-for="(item, index) in items" class="list-group-item">
                         <span v-if="! includedItems.find(included => included.id === item.id)">
                             <span @click="addItem(item)" class="item-add-able">
                                 <i class="fa fa-plus fa-fw add-able-icon"></i> {{item.name}}
@@ -72,6 +72,7 @@
             {
                 addItem(item) {
                     if (this.includedItems.find(included => included.id === item.id) === undefined) {
+                        this.items.push(item);
                         this.includedItems.push(item);
                         this.saveList();
                     }
@@ -120,13 +121,14 @@
                             currentAisleName = item.aisle.name;
                             if (aisles[currentAisleName] === undefined) {
                                 aisles[""+currentAisleName+""] = [item.aisle.id];
+                                aisles[""+currentAisleName+""].shift(); // seems silly, but without the above line, I cannot get this to work as expected
                             }
                         }
                         aisles[""+currentAisleName+""].push(item);
 
                     });
 
-                    Object.keys(aisles).forEach(item => aisles[item].sort((a, b) => (a.name < b.name) ? -1 : 1));
+                    Object.keys(aisles).forEach(item => aisles[item].sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : 1));
 
                     return aisles;
                 },

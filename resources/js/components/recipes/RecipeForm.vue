@@ -123,8 +123,10 @@
                 });
             },
             addItem(item) {
-                this.items.push(item);
-                this.submit();
+                if (this.items.find(included => included.id === item.id) === undefined) {
+                    this.items.push(item);
+                    this.submit();
+                }
             },
             editItem(item) {
                 let itemToRemove = this.items.find(function(e) {

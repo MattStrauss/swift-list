@@ -71,8 +71,10 @@
         methods:
             {
                 addItem(item) {
-                    this.includedItems.push(item);
-                    this.saveList();
+                    if (this.includedItems.find(included => included.id === item.id) === undefined) {
+                        this.includedItems.push(item);
+                        this.saveList();
+                    }
                 },
                 deleteItem(index, id = null) {
                     if (id !== null)  {

@@ -2205,7 +2205,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addItem: function addItem(item) {
-      this.items.push(item);
+      if (this.items.find(function (included) {
+        return included.id === item.id;
+      }) === undefined) {
+        this.items.push(item);
+      }
     },
     deleteItemModal: function deleteItemModal(item) {
       this.itemBeingDeleted = item;
@@ -2558,8 +2562,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addItem: function addItem(item) {
-      this.items.push(item);
-      this.submit();
+      if (this.items.find(function (included) {
+        return included.id === item.id;
+      }) === undefined) {
+        this.items.push(item);
+        this.submit();
+      }
     },
     editItem: function editItem(item) {
       var itemToRemove = this.items.find(function (e) {
@@ -2737,8 +2745,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   },
   methods: {
     addItem: function addItem(item) {
-      this.includedItems.push(item);
-      this.saveList();
+      if (this.includedItems.find(function (included) {
+        return included.id === item.id;
+      }) === undefined) {
+        this.includedItems.push(item);
+        this.saveList();
+      }
     },
     deleteItem: function deleteItem(index) {
       var _this = this;

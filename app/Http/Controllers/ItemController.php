@@ -51,9 +51,9 @@ class ItemController extends Controller
             'aisle_id' => 'required',
         ]);
 
-        $item = Item::with('aisle')->firstOrCreate(
+        $item = Item::firstOrCreate(
             ['user_id'=> Auth::user()->id, 'name' => $request->input('name'), 'aisle_id' => $request->input('aisle_id')]
-        );
+        )->load('aisle');
 
         return response()->json($item, 200);
     }

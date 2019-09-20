@@ -85,7 +85,9 @@
         methods:
             {
                 addItem(item) {
-                    this.items.push(item);
+                    if (this.items.find(included => included.id === item.id) === undefined) {
+                        this.items.push(item);
+                    }
                 },
                 deleteItemModal(item) {
                     this.itemBeingDeleted = item;

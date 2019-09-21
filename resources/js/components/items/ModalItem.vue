@@ -102,10 +102,10 @@
                 });
             },
             updateItem(item) {
-                this.action = 'Edit';
-                this.item.name = item.name;
-                this.item.aisle_id = item.aisle.id;
-                this.item.id = item.id;
+                this.item = item;
+                if (item.id !== undefined) {
+                    this.action = 'Edit';
+                }
             },
             clearItemDetails(closeModal = false) {
                 this.item['name'] = "";

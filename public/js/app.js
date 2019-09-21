@@ -2024,7 +2024,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     addNewItem: function addNewItem() {
-      this.$emit('modal-item-open');
+      var item = {
+        name: this.search
+      };
+      this.$emit('modal-item-open', item);
       this.search = "";
       this.arrowCounter = -1;
       this.isOpen = false;
@@ -2398,10 +2401,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateItem: function updateItem(item) {
-      this.action = 'Edit';
-      this.item.name = item.name;
-      this.item.aisle_id = item.aisle.id;
-      this.item.id = item.id;
+      this.item = item;
+
+      if (item.id !== undefined) {
+        this.action = 'Edit';
+      }
     },
     clearItemDetails: function clearItemDetails() {
       var closeModal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -2750,9 +2754,14 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (this.includedItems.find(function (included) {
         return included.id === item.id;
       }) === undefined) {
-        this.items.push(item);
         this.includedItems.push(item);
         this.saveList();
+      }
+
+      if (this.items.find(function (included) {
+        return included.id === item.id;
+      }) === undefined) {
+        this.items.push(item);
       }
     },
     deleteItem: function deleteItem(index) {
@@ -7494,7 +7503,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.autocomplete {\n    position: relative;\n}\n.autocomplete-results {\n    padding: 0;\n    margin: 0;\n    border: 1px solid #eeeeee;\n    height: 160px;\n    overflow: auto;\n    width: 100%;\n}\n.autocomplete-result {\n    list-style: none;\n    text-align: left;\n    padding: 4px 2px;\n    cursor: pointer;\n}\n.autocomplete-result.is-active,\n.autocomplete-result:hover {\n    background-color: #3490dc;\n    color: white;\n}\n\n", ""]);
+exports.push([module.i, "\n.autocomplete {\n    position: relative;\n}\n.autocomplete-results {\n    padding: 0;\n    margin: 0;\n    border: 1px solid #eeeeee;\n    height: 160px;\n    overflow: auto;\n    width: 100%;\n}\n.autocomplete-result {\n    list-style: none;\n    text-align: left;\n    padding: 4px 2px;\n    cursor: pointer;\n}\n.autocomplete-result.is-active,\n.autocomplete-result:hover {\n    background-color: #3490dc;\n    color: white;\n}\n.add-item {\n}\n\n", ""]);
 
 // exports
 
@@ -41993,9 +42002,10 @@ var render = function() {
             }),
         _vm._v(" "),
         this.results.length < 1 && this.model === "item" && !this.isLoading
-          ? _c("li", { staticClass: "autocomplete-result" }, [
+          ? _c("li", { staticClass: "autocomplete-result add-item" }, [
               _c("span", { on: { click: _vm.addNewItem } }, [
-                _vm._v("Add New item")
+                _c("i", { staticClass: "fas fa-plus fa-fw" }),
+                _vm._v(" Add New item: " + _vm._s(this.search))
               ])
             ])
           : _vm._e()
@@ -43309,9 +43319,7 @@ var render = function() {
         },
         on: {
           "item-added": _vm.addItem,
-          "modal-item-open": function($event) {
-            _vm.modalItemOpen = true
-          }
+          "modal-item-open": _vm.createOrEditItem
         }
       }),
       _vm._v(" "),

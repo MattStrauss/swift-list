@@ -14,8 +14,8 @@
             <li v-else v-for="(result, i) in results" :key="i" @click="setResult(result)" class="autocomplete-result" :class="{ 'is-active': i === arrowCounter }">
                 {{ result.name }} - {{(model === "recipe") ? result.category.name : result.aisle.name}}
             </li>
-            <li v-if="this.results.length < 1 && this.model === 'item' && ! this.isLoading" class="autocomplete-result">
-                <span @click="addNewItem">Add New item</span>
+            <li v-if="this.results.length < 1 && this.model === 'item' && ! this.isLoading" class="autocomplete-result add-item">
+                <span @click="addNewItem"><i class="fas fa-plus fa-fw"></i> Add New item: {{this.search}}</span>
             </li>
         </ul>
     </div>
@@ -114,7 +114,8 @@
                 }
             },
             addNewItem() {
-                this.$emit('modal-item-open');
+                let item = {name: this.search};
+                this.$emit('modal-item-open', item);
                 this.search = "";
                 this.arrowCounter = -1;
                 this.isOpen = false;
@@ -148,6 +149,10 @@
     .autocomplete-result:hover {
         background-color: #3490dc;
         color: white;
+    }
+
+    .add-item {
+
     }
 
 </style>

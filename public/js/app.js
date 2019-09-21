@@ -2409,9 +2409,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     clearItemDetails: function clearItemDetails() {
       var closeModal = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.item['name'] = "";
-      this.item['aisle_id'] = "";
-      this.item['id'] = "";
+      this.item = {};
 
       if (closeModal) {
         this.closeItemModal();

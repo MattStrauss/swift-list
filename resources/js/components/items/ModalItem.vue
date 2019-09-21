@@ -108,9 +108,7 @@
                 }
             },
             clearItemDetails(closeModal = false) {
-                this.item['name'] = "";
-                this.item['aisle_id'] = "";
-                this.item['id'] = "";
+                this.item = {};
                 if (closeModal) {
                     this.closeItemModal();
                 }

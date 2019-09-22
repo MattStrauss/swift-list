@@ -2184,6 +2184,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['initialAvailableItems', 'aisles', 'customAisleOrder'],
   data: function data() {
@@ -42191,7 +42193,7 @@ var render = function() {
             "button",
             {
               staticClass:
-                "btn btn-sm btn-outline-primary float-right dusk-add-new-item",
+                "btn btn-sm btn-outline-primary float-right dusk-item-index-add-new-item-btn",
               staticStyle: { "margin-right": "10px" },
               on: {
                 click: function($event) {
@@ -42199,7 +42201,10 @@ var render = function() {
                 }
               }
             },
-            [_c("i", { staticClass: "fa fa-plus-circle" }), _vm._v(" New Item")]
+            [
+              _c("i", { staticClass: "fa fa-plus-circle" }),
+              _vm._v(" New Item\n            ")
+            ]
           )
         ]),
         _vm._v(" "),
@@ -42685,7 +42690,7 @@ var render = function() {
                   "button",
                   {
                     staticClass:
-                      "btn btn-outline-primary dusk-modal-add-item-btn",
+                      "btn btn-outline-primary dusk-modal-item-add-edit-item-btn",
                     attrs: { type: "button" },
                     on: { click: _vm.submit }
                   },

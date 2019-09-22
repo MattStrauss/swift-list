@@ -2,7 +2,7 @@
     <div>
         <div class="card">
             <div class="card-header">Items
-                <button @click="createOrEditItem()" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right"><i class="fa fa-plus-circle"></i> New Item</button>
+                <button @click="createOrEditItem()" style="margin-right:10px;" class="btn btn-sm btn-outline-primary float-right dusk-add-new-item"><i class="fa fa-plus-circle"></i> New Item</button>
             </div>
 
             <div v-if="success" class="alert alert-primary fade show" role="alert" style="margin:2%;">

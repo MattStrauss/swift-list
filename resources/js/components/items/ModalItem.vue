@@ -39,7 +39,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" @click="clearItemDetails(('AndCloseModal'))">Cancel</button>
-                            <button @click="submit" type="button" class="btn btn-outline-primary">
+                            <button @click="submit" type="button" class="btn btn-outline-primary dusk-modal-add-item-btn">
                                 <span v-show="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 {{action}}
                             </button>

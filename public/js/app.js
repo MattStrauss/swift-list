@@ -42190,7 +42190,8 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-sm btn-outline-primary float-right",
+              staticClass:
+                "btn btn-sm btn-outline-primary float-right dusk-add-new-item",
               staticStyle: { "margin-right": "10px" },
               on: {
                 click: function($event) {
@@ -42683,7 +42684,8 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-outline-primary",
+                    staticClass:
+                      "btn btn-outline-primary dusk-modal-add-item-btn",
                     attrs: { type: "button" },
                     on: { click: _vm.submit }
                   },

@@ -9,7 +9,7 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ItemsTest extends DuskTestCase
+class ItemTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
@@ -24,7 +24,7 @@ class ItemsTest extends DuskTestCase
 
     }
 
-    /** @test **/
+    /** @test */
     public function visitItemsIndex()
     {
         $this->browse(function (Browser $browser) {
@@ -34,7 +34,7 @@ class ItemsTest extends DuskTestCase
         });
     }
 
-    /** @test **/
+    /** @test */
     public function addNewItem()
     {
         $this->browse(function (Browser $browser) {
@@ -53,7 +53,7 @@ class ItemsTest extends DuskTestCase
         });
     }
 
-    /** @test **/
+    /** @test */
     public function editItem()
     {
         $item = factory(Item::class)->create();
@@ -75,7 +75,7 @@ class ItemsTest extends DuskTestCase
         });
     }
 
-    /** @test **/
+    /** @test */
     public function deleteItem()
     {
         $item = factory(Item::class)->create(['name' => 'Pears']);

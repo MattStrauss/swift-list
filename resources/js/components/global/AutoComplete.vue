@@ -4,7 +4,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="search"><i class="fas fa-search fa-fw"></i></span>
             </div>
-            <input type="text" class="form-control" @input="onChange" v-model="search"
+            <input type="text" name="autocomplete" class="form-control" @input="onChange" v-model="search"
                    @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter" :placeholder="placeHolder">
         </div>
         <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results">

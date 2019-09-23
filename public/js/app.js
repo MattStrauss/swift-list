@@ -41898,7 +41898,11 @@ var render = function() {
             }
           ],
           staticClass: "form-control",
-          attrs: { type: "text", placeholder: _vm.placeHolder },
+          attrs: {
+            type: "text",
+            name: "autocomplete",
+            placeholder: _vm.placeHolder
+          },
           domProps: { value: _vm.search },
           on: {
             input: [
@@ -42570,6 +42574,7 @@ var render = function() {
                       type: "text",
                       name: "name",
                       id: "name",
+                      dusk: "modal-item-name-field",
                       autofocus: ""
                     },
                     domProps: { value: _vm.item.name },

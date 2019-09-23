@@ -43148,6 +43148,7 @@ var render = function() {
         staticClass: "form-control",
         attrs: {
           type: "text",
+          name: "search_recipes",
           placeholder: "Search Recipes...",
           "aria-label": "Search Recipes",
           "aria-describedby": "search"

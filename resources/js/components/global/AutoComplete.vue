@@ -15,7 +15,7 @@
                 {{ result.name }} - {{(model === "recipe") ? result.category.name : result.aisle.name}}
             </li>
             <li v-if="this.results.length < 1 && this.model === 'item' && ! this.isLoading" class="autocomplete-result add-item">
-                <span @click="addNewItem"><i class="fas fa-plus fa-fw"></i> Add New item: {{this.search}}</span>
+                <span dusk="auto-complete-new-item-span" @click="addNewItem"><i class='fas fa-plus fa-fw'></i> Add New item: {{this.search}}</span>
             </li>
         </ul>
     </div>

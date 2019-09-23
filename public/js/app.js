@@ -42007,10 +42007,17 @@ var render = function() {
         _vm._v(" "),
         this.results.length < 1 && this.model === "item" && !this.isLoading
           ? _c("li", { staticClass: "autocomplete-result add-item" }, [
-              _c("span", { on: { click: _vm.addNewItem } }, [
-                _c("i", { staticClass: "fas fa-plus fa-fw" }),
-                _vm._v(" Add New item: " + _vm._s(this.search))
-              ])
+              _c(
+                "span",
+                {
+                  attrs: { dusk: "auto-complete-new-item-span" },
+                  on: { click: _vm.addNewItem }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-plus fa-fw" }),
+                  _vm._v(" Add New item: " + _vm._s(this.search))
+                ]
+              )
             ])
           : _vm._e()
       ],
@@ -42137,7 +42144,10 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-outline-danger",
-                attrs: { type: "button" },
+                attrs: {
+                  type: "button",
+                  dusk: "modal-confirm-delete-delete-btn"
+                },
                 on: { click: _vm.submit }
               },
               [

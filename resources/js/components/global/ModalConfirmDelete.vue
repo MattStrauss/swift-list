@@ -20,7 +20,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-secondary" @click="$emit('close-confirm-delete-modal')">Cancel</button>
-                                <button @click="submit" type="button" class="btn btn-outline-danger">
+                                <button @click="submit" type="button" class="btn btn-outline-danger" dusk="modal-confirm-delete-delete-btn">
                                     <span v-show="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Delete
                                 </button>

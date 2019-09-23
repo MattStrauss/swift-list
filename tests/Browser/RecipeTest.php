@@ -95,6 +95,17 @@ class RecipeTest extends DuskTestCase
                     ->pause(300)
                     ->assertSee('Item Added')
                     ->click('.close')
+                    ->type('autocomplete', 'AAAA')
+                    ->waitFor('.autocomplete-results')
+                    ->mouseover('.add-item')
+                    ->click("@auto-complete-new-item-span")
+                    ->pause(500)
+                    ->select('aisle_id', 1)
+                    ->click('.dusk-modal-item-add-edit-item-btn')
+                    ->pause(300)
+                    ->assertSee('Item Added')
+                    ->click('.close')
+                    ->assertSee('AAAA')
                     ->type('autocomplete', 'app')
                     ->waitFor('.autocomplete-results')
                     ->keys('[name=autocomplete]', '{down}', '{enter}')
@@ -133,6 +144,15 @@ class RecipeTest extends DuskTestCase
                     ->click('.btn-outline-secondary')
                     ->assertPathIs('/recipes/1/edit')
                     ->assertSee('Apples')
+                    ->click('.fa-pen-square')
+                    ->waitFor('.modal-body')
+                    ->assertSee('Edit Item')
+                    ->type('@modal-item-name-field', 'Apple Dapples')
+                    ->click('.dusk-modal-item-add-edit-item-btn')
+                    ->pause(300)
+                    ->assertSee('Item Edited')
+                    ->click('.close')
+                    ->assertSee('Apple Dapples')
                     ->type('name', 'Changed to Test Recipe')
                     ->select('category', 2)
                     ->type('instructions', 'Make the food...')
@@ -152,7 +172,7 @@ class RecipeTest extends DuskTestCase
                     ->assertSee('Bread')
                     ->click('.fa-minus-circle')
                     ->pause(300)
-                    ->assertDontSee('Apples')
+                    ->assertDontSee('Apples Dapples')
                     ->click('.btn-outline-primary')
                     ->pause(300)
                     ->assertSee('Recipe Updated');
@@ -164,4 +184,30 @@ class RecipeTest extends DuskTestCase
         });
     }
 
+    /** @test */
+    public function deleteRecipe()
+    {
+        $recipe = factory(Recipe::class)->create(['user_id' => $this->user->id]);
+        $items = collect([$this->item1]);
+        $recipe->items()->sync($items->pluck('id'));
+
+        $this->browse(function (Browser $browser) use ($recipe) {
+            $browser->loginAs($this->user)
+                    ->visit('/recipes')
+                    ->click('.list-group-item-action')
+                    ->pause(300)
+                    ->assertPathIs('/recipes/1')
+                    ->click('.btn-outline-danger')
+                    ->waitFor('.modal-body')
+                    ->assertSee('Confirm Delete')
+                    ->click('@modal-confirm-delete-delete-btn')
+                    ->pause(500)
+                    ->assertSee('Recipe successfully deleted!')
+                    ->assertPathIs('/recipes');
+
+            $this->assertDatabaseMissing('recipes', ['id' => $recipe->id, 'user_id' => $this->user->id]);
+            $this->assertDatabaseMissing('item_recipe', ['item_id' => $this->item1->id, 'recipe_id' => $recipe->id]);
+
+        });
+    }
 }

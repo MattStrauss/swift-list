@@ -21,7 +21,6 @@ class ItemTest extends DuskTestCase
         $this->user = factory(User::class)->create();
         factory(Aisle::class)->create(['name' => 'Fruits']);
         factory(Aisle::class)->create(['name' => 'Bakery']);
-
     }
 
     /** @test */

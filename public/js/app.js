@@ -41900,7 +41900,7 @@ var render = function() {
           staticClass: "form-control",
           attrs: {
             type: "text",
-            name: "autocomplete",
+            name: _vm.model === "item" ? "autocomplete" : "autocomplete_recipe",
             placeholder: _vm.placeHolder
           },
           domProps: { value: _vm.search },

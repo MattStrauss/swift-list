@@ -43453,7 +43453,7 @@ var render = function() {
       _vm.includedItems.length !== 0
         ? _c(
             "ul",
-            { staticClass: "items" },
+            { staticClass: "items items-on-list" },
             _vm._l(_vm.includedItems, function(item, index) {
               return _c(
                 "li",
@@ -43554,7 +43554,7 @@ var render = function() {
       _vm.includedRecipes.length !== 0
         ? _c(
             "ul",
-            { staticClass: "items" },
+            { staticClass: "items recipes-on-list" },
             _vm._l(_vm.includedRecipes, function(recipe, index) {
               return _c(
                 "li",

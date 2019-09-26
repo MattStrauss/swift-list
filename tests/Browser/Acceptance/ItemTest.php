@@ -83,7 +83,7 @@ class ItemTest extends DuskTestCase
             $browser->loginAs($this->user)
                     ->visit('/items')
                     ->clickLink('Fruits')
-                    ->pause(300)
+                    ->pause(500)
                     ->assertSee('Pears')
                     ->click('.fa-trash-alt')
                     ->pause(200)

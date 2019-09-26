@@ -117,7 +117,7 @@ class RecipeTest extends DuskTestCase
                     ->pause(300)
                     ->assertSee('Bread')
                     ->click('.btn-outline-primary')
-                    ->pause(300)
+                    ->waitFor('.alert-primary')
                     ->assertSee('Recipe Updated');
 
             $this->assertDatabaseHas('recipes', ['name' => 'Test Recipe', 'user_id' => $this->user->id]);
@@ -162,7 +162,7 @@ class RecipeTest extends DuskTestCase
                     ->type('@modal-item-name-field', 'Test')
                     ->select('aisle_id', 1)
                     ->click('.dusk-modal-item-add-edit-item-btn')
-                    ->pause(300)
+                    ->pause(200)
                     ->assertSee('Item Added')
                     ->click('.close')
                     ->type('autocomplete', 'brea')

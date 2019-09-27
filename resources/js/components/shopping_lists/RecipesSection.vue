@@ -4,7 +4,7 @@
         <auto-complete :items="availableRecipes" :isAsync="false" :model="'recipe'" :placeHolder="'Search Recipes...'" @recipe-added="addRecipe"></auto-complete>
 
         <h6> Recipes On List <small v-if="includedRecipes.length !== 0">({{includedRecipes.length}})</small></h6>
-        <ul v-if="includedRecipes.length !== 0" class="items">
+        <ul v-if="includedRecipes.length !== 0" class="items recipes-on-list">
             <li v-for="(recipe, index) in includedRecipes" :index="recipe.id" class="item-delete-able">
                 <i class="fa fa-times fa-hover-show fa-fw" @click="deleteRecipe(index)"></i> <i class="fa fa-times-circle fa-hover-hidden fa-fw"></i> {{ recipe.name }}</li>
         </ul>

@@ -4,7 +4,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="search"><i class="fas fa-search fa-fw"></i></span>
             </div>
-            <input v-model="search" type="text" class="form-control" placeholder="Search Recipes..." aria-label="Search Recipes" aria-describedby="search">
+            <input v-model="search" type="text" name="search_recipes" class="form-control" placeholder="Search Recipes..." aria-label="Search Recipes" aria-describedby="search">
         </div>
         <div class="list-group">
             <div v-if="Object.keys(filteredRecipes).length > 0" v-for="(recipe, index) in filteredRecipes" :key="recipe.id">

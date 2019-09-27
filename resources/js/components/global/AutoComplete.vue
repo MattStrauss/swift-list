@@ -4,7 +4,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="search"><i class="fas fa-search fa-fw"></i></span>
             </div>
-            <input type="text" class="form-control" @input="onChange" v-model="search"
+            <input type="text" :name="(model === 'item') ? 'autocomplete' : 'autocomplete_recipe'" class="form-control" @input="onChange" v-model="search"
                    @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter" :placeholder="placeHolder">
         </div>
         <ul id="autocomplete-results" v-show="isOpen" class="autocomplete-results">
@@ -15,7 +15,7 @@
                 {{ result.name }} - {{(model === "recipe") ? result.category.name : result.aisle.name}}
             </li>
             <li v-if="this.results.length < 1 && this.model === 'item' && ! this.isLoading" class="autocomplete-result add-item">
-                <span @click="addNewItem"><i class="fas fa-plus fa-fw"></i> Add New item: {{this.search}}</span>
+                <span dusk="auto-complete-new-item-span" @click="addNewItem"><i class='fas fa-plus fa-fw'></i> Add New item: {{this.search}}</span>
             </li>
         </ul>
     </div>

@@ -2184,6 +2184,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['initialAvailableItems', 'aisles', 'customAisleOrder'],
   data: function data() {
@@ -41896,7 +41898,11 @@ var render = function() {
             }
           ],
           staticClass: "form-control",
-          attrs: { type: "text", placeholder: _vm.placeHolder },
+          attrs: {
+            type: "text",
+            name: _vm.model === "item" ? "autocomplete" : "autocomplete_recipe",
+            placeholder: _vm.placeHolder
+          },
           domProps: { value: _vm.search },
           on: {
             input: [
@@ -42001,10 +42007,17 @@ var render = function() {
         _vm._v(" "),
         this.results.length < 1 && this.model === "item" && !this.isLoading
           ? _c("li", { staticClass: "autocomplete-result add-item" }, [
-              _c("span", { on: { click: _vm.addNewItem } }, [
-                _c("i", { staticClass: "fas fa-plus fa-fw" }),
-                _vm._v(" Add New item: " + _vm._s(this.search))
-              ])
+              _c(
+                "span",
+                {
+                  attrs: { dusk: "auto-complete-new-item-span" },
+                  on: { click: _vm.addNewItem }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-plus fa-fw" }),
+                  _vm._v(" Add New item: " + _vm._s(this.search))
+                ]
+              )
             ])
           : _vm._e()
       ],
@@ -42131,7 +42144,10 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-outline-danger",
-                attrs: { type: "button" },
+                attrs: {
+                  type: "button",
+                  dusk: "modal-confirm-delete-delete-btn"
+                },
                 on: { click: _vm.submit }
               },
               [
@@ -42190,7 +42206,8 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-sm btn-outline-primary float-right",
+              staticClass:
+                "btn btn-sm btn-outline-primary float-right dusk-item-index-add-new-item-btn",
               staticStyle: { "margin-right": "10px" },
               on: {
                 click: function($event) {
@@ -42198,7 +42215,10 @@ var render = function() {
                 }
               }
             },
-            [_c("i", { staticClass: "fa fa-plus-circle" }), _vm._v(" New Item")]
+            [
+              _c("i", { staticClass: "fa fa-plus-circle" }),
+              _vm._v(" New Item\n            ")
+            ]
           )
         ]),
         _vm._v(" "),
@@ -42564,6 +42584,7 @@ var render = function() {
                       type: "text",
                       name: "name",
                       id: "name",
+                      dusk: "modal-item-name-field",
                       autofocus: ""
                     },
                     domProps: { value: _vm.item.name },
@@ -42683,7 +42704,8 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-outline-primary",
+                    staticClass:
+                      "btn btn-outline-primary dusk-modal-item-add-edit-item-btn",
                     attrs: { type: "button" },
                     on: { click: _vm.submit }
                   },
@@ -43136,6 +43158,7 @@ var render = function() {
         staticClass: "form-control",
         attrs: {
           type: "text",
+          name: "search_recipes",
           placeholder: "Search Recipes...",
           "aria-label": "Search Recipes",
           "aria-describedby": "search"
@@ -43430,7 +43453,7 @@ var render = function() {
       _vm.includedItems.length !== 0
         ? _c(
             "ul",
-            { staticClass: "items" },
+            { staticClass: "items items-on-list" },
             _vm._l(_vm.includedItems, function(item, index) {
               return _c(
                 "li",
@@ -43531,7 +43554,7 @@ var render = function() {
       _vm.includedRecipes.length !== 0
         ? _c(
             "ul",
-            { staticClass: "items" },
+            { staticClass: "items recipes-on-list" },
             _vm._l(_vm.includedRecipes, function(recipe, index) {
               return _c(
                 "li",

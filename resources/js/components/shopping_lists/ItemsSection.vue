@@ -37,7 +37,7 @@
 
 
         <h6> Items On List <small v-if="includedItems.length !== 0">({{includedItems.length}})</small></h6>
-        <ul v-if="includedItems.length !== 0" class="items">
+        <ul v-if="includedItems.length !== 0" class="items items-on-list">
             <li v-for="(item, index) in includedItems" :index="item.id" class="item-delete-able">
                 <i class="fa fa-times fa-hover-show fa-fw" @click="deleteItem(index)"></i> <i class="fa fa-times-circle fa-hover-hidden fa-fw"></i> {{ item.name }}</li>
         </ul>

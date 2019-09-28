@@ -2491,25 +2491,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialRecipe', 'initialItems', 'availableItems', 'categories', 'previousUrl', 'initialAction'],
+  props: ['initialRecipe', 'initialItems', 'availableItems', 'categories', 'previousUrl', 'initialAction', 'aisles'],
   data: function data() {
     return {
       recipe: this.initialRecipe,
@@ -2732,7 +2715,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['availableItems', 'initialIncludedItems', 'aisles'],
+  props: ['availableItems', 'initialIncludedItems', 'aisles', 'context'],
   data: function data() {
     return {
       includedItems: this.initialIncludedItems,
@@ -7598,7 +7581,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.no-style-anchor {\n    text-decoration: none;\n    color: inherit;\n}\n.no-style-anchor:hover {\n    text-decoration: none;\n    color: inherit;\n}\n.add-able-icon:hover {\n    cursor: pointer;\n    color: #3490dc !important;\n}\n.item-add-able:hover {\n    color: #3490dc;\n    cursor: pointer;\n}\n.aisle-item-delete-able {\n    pointer-events: none;\n    cursor: none;\n    color: #6c757d;\n}\n.aisle-item-delete-able:hover {\n    color: #e3342f;\n}\n.aisle-item-delete-able > i {\n    pointer-events: auto;\n    cursor: pointer;\n}\n.item-delete-able.toggle-aisles {\n    pointer-events: auto;\n    cursor: pointer;\n}\n.item-delete-able.toggle-aisles:hover {\n    color: #3490dc !important;\n}\n\n", ""]);
+exports.push([module.i, "\n.no-style-anchor {\n    text-decoration: none;\n    color: inherit;\n}\n.no-style-anchor:hover {\n    text-decoration: none;\n    color: inherit;\n}\n.add-able-icon:hover {\n    cursor: pointer;\n    color: #3490dc !important;\n}\n.item-add-able:hover {\n    color: #3490dc;\n    cursor: pointer;\n}\n.aisle-item-delete-able {\n    pointer-events: none;\n    cursor: none;\n    color: #6c757d;\n}\n.aisle-item-delete-able:hover {\n    color: #e3342f;\n}\n.aisle-item-delete-able > i {\n    pointer-events: auto;\n    cursor: pointer;\n}\n.item-delete-able.toggle-aisles {\n    pointer-events: auto;\n    cursor: pointer;\n}\n.item-delete-able.toggle-aisles:hover {\n    color: #3490dc !important;\n}\n", ""]);
 
 // exports
 
@@ -42940,118 +42923,21 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "form-group" },
           [
-            _c("label", [
-              _vm._v("\n                Ingredients "),
-              _c(
-                "a",
-                {
-                  staticClass: "cursor-pointer",
-                  attrs: { "data-toggle": "tooltip", title: "Add ingredient" },
-                  on: {
-                    click: function($event) {
-                      return _vm.createOrEditItem()
-                    }
-                  }
-                },
-                [
-                  _c("i", {
-                    staticClass: "fas fa-plus-circle fa-fw text-secondary"
-                  })
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("auto-complete", {
+            _c("items-section", {
               attrs: {
-                items: this.availableItems,
-                isAsync: false,
-                model: "item",
-                placeHolder: "Search for ingredients..."
+                "available-items": this.availableItems,
+                "initial-included-items": this.items,
+                aisles: this.aisles,
+                context: "recipe"
               },
-              on: {
-                "item-added": _vm.addItem,
-                "modal-item-open": _vm.createOrEditItem
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "ul",
-              { staticClass: "list-group list-group-flush" },
-              [
-                _vm.items.length < 1
-                  ? _c("li", { staticClass: "list-group-item" }, [
-                      _vm._v(" No ingredients... ")
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm._l(_vm.items, function(item, index) {
-                  return _c(
-                    "li",
-                    { key: item.id, staticClass: "list-group-item" },
-                    [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "cursor-pointer",
-                          attrs: {
-                            id: "item_" + index,
-                            "data-toggle": "tooltip",
-                            title: "Remove ingredient"
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.removeItem(index)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fas fa-minus-circle fa-fw text-danger"
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "cursor-pointer",
-                          attrs: {
-                            id: "item_" + index,
-                            "data-toggle": "tooltip",
-                            title: "Edit ingredient"
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.createOrEditItem(item)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass:
-                              "fas fa-pen-square fa-fw text-secondary"
-                          })
-                        ]
-                      ),
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(item.name) +
-                          "\n                    "
-                      ),
-                      _c("small", { staticClass: "text-muted" }, [
-                        _vm._v("(" + _vm._s(item.aisle.name) + ")")
-                      ])
-                    ]
-                  )
-                })
-              ],
-              2
-            )
+              on: { "save-list": _vm.submit }
+            })
           ],
           1
         ),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" }),
         _vm._v(" "),
         _c("hr"),
         _vm._v(" "),
@@ -43090,7 +42976,11 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-outline-primary float-right",
-              attrs: { type: "submit", disabled: _vm.processing },
+              attrs: {
+                type: "submit",
+                disabled: _vm.processing,
+                dusk: "recipe-form-submit-button"
+              },
               on: {
                 submit: function($event) {
                   return _vm.submit("flashSuccess")
@@ -43267,7 +43157,11 @@ var render = function() {
     "div",
     [
       _c("h6", [
-        _vm._v("Items\n        "),
+        _vm._v(
+          " " +
+            _vm._s(this.context !== "recipe" ? "Items" : "Ingredients") +
+            "\n        "
+        ),
         _c(
           "a",
           {
@@ -43286,31 +43180,41 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "item-delete-able toggle-aisles text-muted small",
-            on: {
-              click: function($event) {
-                return _vm.showAislesToggle()
-              }
-            }
-          },
-          [
-            _c("i", {
-              class: {
-                "fas fa-eye-slash": _vm.showAisles,
-                "fas fa-eye": !_vm.showAisles
-              }
-            }),
-            _vm._v(" Aisles\n        ")
-          ]
-        ),
+        this.context !== "recipe"
+          ? _c(
+              "a",
+              {
+                staticClass: "item-delete-able toggle-aisles text-muted small",
+                on: {
+                  click: function($event) {
+                    return _vm.showAislesToggle()
+                  }
+                }
+              },
+              [
+                _c("i", {
+                  class: {
+                    "fas fa-eye-slash": _vm.showAisles,
+                    "fas fa-eye": !_vm.showAisles
+                  }
+                }),
+                _vm._v(" Aisles\n        ")
+              ]
+            )
+          : _vm._e(),
         _vm._v(" "),
         this.favoriteItemsNotEmpty
           ? _c(
               "a",
               {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: this.context !== "recipe",
+                    expression: "this.context !== 'recipe'"
+                  }
+                ],
                 staticClass: "item-delete-able toggle-aisles text-muted small",
                 on: {
                   click: function($event) {
@@ -43336,7 +43240,10 @@ var render = function() {
           items: this.items,
           isAsync: false,
           model: "item",
-          placeHolder: "Search Items..."
+          placeHolder:
+            this.context !== "recipe"
+              ? "Search Items..."
+              : " Search for Ingredients..."
         },
         on: {
           "item-added": _vm.addItem,
@@ -43444,7 +43351,15 @@ var render = function() {
       _c("div", { staticClass: "clearfix" }),
       _vm._v(" "),
       _c("h6", [
-        _vm._v(" Items On List "),
+        _vm._v(
+          " " +
+            _vm._s(
+              this.context !== "recipe"
+                ? "Items On List"
+                : "Included Ingredients"
+            ) +
+            " "
+        ),
         _vm.includedItems.length !== 0
           ? _c("small", [_vm._v("(" + _vm._s(_vm.includedItems.length) + ")")])
           : _vm._e()
@@ -43478,7 +43393,15 @@ var render = function() {
             0
           )
         : _c("p", { staticClass: "text-muted" }, [
-            _vm._v(" No items on list yet...")
+            _vm._v(
+              " " +
+                _vm._s(
+                  this.context !== "recipe"
+                    ? "No items on list yet..."
+                    : "No ingredients..."
+                ) +
+                " "
+            )
           ]),
       _vm._v(" "),
       _c("modal-item", {
@@ -43726,7 +43649,8 @@ var render = function() {
             attrs: {
               "available-items": this.availableItems,
               "initial-included-items": this.includedItems,
-              aisles: this.aisles
+              aisles: this.aisles,
+              context: "shopping-list"
             },
             on: { "save-list": _vm.submit }
           }),

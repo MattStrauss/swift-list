@@ -1,17 +1,17 @@
 <template>
     <div>
-        <h6>Items
+        <h6> {{ (this.context !== 'recipe') ? 'Items' : 'Ingredients' }}
             <a @click="createOrEditItem()" data-toggle="tooltip" title="Add item" class="cursor-pointer">
                 <i class="fas fa-plus-circle text-secondary add-able-icon"></i>
             </a>
-            <a @click="showAislesToggle()" class="item-delete-able toggle-aisles text-muted small">
+            <a v-if="this.context !== 'recipe'" @click="showAislesToggle()" class="item-delete-able toggle-aisles text-muted small">
                 <i :class="{'fas fa-eye-slash': showAisles, 'fas fa-eye': ! showAisles}"></i> Aisles
             </a>
-            <a v-if="this.favoriteItemsNotEmpty" @click="addFavoriteItemsToggle()" class="item-delete-able toggle-aisles text-muted small">
+            <a v-show="this.context !== 'recipe'" v-if="this.favoriteItemsNotEmpty" @click="addFavoriteItemsToggle()" class="item-delete-able toggle-aisles text-muted small">
                 <i :class="{'fas fa-times': this.favoriteItemsAllOnList, 'fas fa-plus': ! this.favoriteItemsAllOnList}"></i> Favorite Items
             </a>
         </h6>
-        <auto-complete :items="this.items" :isAsync="false" :model="'item'" :placeHolder="'Search Items...'" @item-added="addItem" @modal-item-open="createOrEditItem"></auto-complete>
+        <auto-complete :items="this.items" :isAsync="false" :model="'item'" :placeHolder="(this.context !== 'recipe') ? 'Search Items...' : ' Search for Ingredients...'" @item-added="addItem" @modal-item-open="createOrEditItem"></auto-complete>
 
         <div v-show="showAisles" class="col-sm-4 mb-4 float-left collapse show" v-for="(items, index) in this.itemsByAisle">
             <div class="card">
@@ -36,12 +36,12 @@
         <div class="clearfix"></div>
 
 
-        <h6> Items On List <small v-if="includedItems.length !== 0">({{includedItems.length}})</small></h6>
+        <h6> {{ (this.context !== 'recipe') ? 'Items On List' : 'Included Ingredients' }} <small v-if="includedItems.length !== 0">({{includedItems.length}})</small></h6>
         <ul v-if="includedItems.length !== 0" class="items items-on-list">
             <li v-for="(item, index) in includedItems" :index="item.id" class="item-delete-able">
                 <i class="fa fa-times fa-hover-show fa-fw" @click="deleteItem(index)"></i> <i class="fa fa-times-circle fa-hover-hidden fa-fw"></i> {{ item.name }}</li>
         </ul>
-        <p v-else class="text-muted"> No items on list yet...</p>
+        <p v-else class="text-muted"> {{ (this.context !== 'recipe') ? 'No items on list yet...' : 'No ingredients...' }} </p>
 
         <modal-item :initial-item='{}' :initial-action="'Add'" :aisles='this.aisles' v-show="modalItemOpen" @close-item-modal="modalItemOpen = false"></modal-item>
 
@@ -51,7 +51,7 @@
 
 <script>
     export default {
-        props: ['availableItems', 'initialIncludedItems', 'aisles'],
+        props: ['availableItems', 'initialIncludedItems', 'aisles', 'context'],
         data() {
             return {
                 includedItems: this.initialIncludedItems,
@@ -198,5 +198,4 @@
     .item-delete-able.toggle-aisles:hover {
         color: #3490dc !important;
     }
-
 </style>

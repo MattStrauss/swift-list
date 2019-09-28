@@ -30,29 +30,12 @@
                 <textarea class="form-control" name="instructions" id="instructions" rows="6" v-model="recipe.instructions"></textarea>
                 <div v-if="errors && errors.instructions" class="text-danger">{{ errors.instructions[0] }}</div>
             </div>
-            <div class="form-group">
-                <label>
-                    Ingredients <a data-toggle="tooltip" title="Add ingredient" class="cursor-pointer" @click="createOrEditItem()">
-                    <i class="fas fa-plus-circle fa-fw text-secondary"></i></a>
-                </label>
+            <div>
 
-                <auto-complete :items="this.availableItems" :isAsync="false" :model="'item'" :placeHolder="'Search for ingredients...'" @item-added="addItem" @modal-item-open="createOrEditItem"></auto-complete>
+                <items-section :available-items="this.availableItems" :initial-included-items="this.items" :aisles="this.aisles" :context="'recipe'" @save-list="submit"></items-section>
 
-                <ul class="list-group list-group-flush">
-                    <li v-if="items.length < 1" class="list-group-item"> No ingredients... </li>
-                    <li v-for="(item, index) in items" :key="item.id" class="list-group-item">
-                        <a :id="'item_' + index" data-toggle="tooltip" title="Remove ingredient" class="cursor-pointer" @click="removeItem(index)">
-                            <i class="fas fa-minus-circle fa-fw text-danger"></i>
-                        </a>
-                        <a :id="'item_' + index" data-toggle="tooltip" title="Edit ingredient" class="cursor-pointer" @click="createOrEditItem(item)">
-                            <i class="fas fa-pen-square fa-fw text-secondary"></i>
-                        </a>
-                        {{ item.name }}
-                        <small class="text-muted">({{ item.aisle.name }})</small>
-                    </li>
-                </ul>
             </div>
-
+            <div class="clearfix"></div>
             <hr>
 
             <input type="hidden" name="item_id" value="" v-model="recipe.id">
@@ -60,7 +43,7 @@
             <div class="form-buttons mb-4">
                 <a :href="previousUrl" class="btn btn-outline-secondary float-left">Back</a>
 
-                <button type="submit" @submit="submit('flashSuccess')" :disabled="processing" class="btn btn-outline-primary float-right">
+                <button type="submit" @submit="submit('flashSuccess')" :disabled="processing" class="btn btn-outline-primary float-right" dusk="recipe-form-submit-button">
                     <span v-show="processing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     {{action}}
                 </button>
@@ -72,7 +55,7 @@
 
 <script>
     export default {
-        props: ['initialRecipe', 'initialItems', 'availableItems', 'categories', 'previousUrl', 'initialAction'],
+        props: ['initialRecipe', 'initialItems', 'availableItems', 'categories', 'previousUrl', 'initialAction', 'aisles'],
         data() {
             return {
                 recipe: this.initialRecipe,

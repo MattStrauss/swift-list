@@ -24,7 +24,7 @@
 
                     <div class="clearfix"></div> <br>
 
-                        <items-section :available-items="this.availableItems" :initial-included-items="this.includedItems" :aisles="this.aisles" @save-list="submit"></items-section>
+                        <items-section :available-items="this.availableItems" :initial-included-items="this.includedItems" :aisles="this.aisles" :context="'shopping-list'" @save-list="submit"></items-section>
 
                     <div class="clearfix"></div>
                     <hr>

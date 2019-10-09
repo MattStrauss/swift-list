@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('guest');
 
-Auth::routes();
+Auth::routes(['verify' => true, 'register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 

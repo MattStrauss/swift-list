@@ -26,11 +26,11 @@ class RoutesTest extends TestCase
 
 
     /** @test  */
-    public function guestCanAccessRegisterPage()
+    public function guestCanNotAccessRegisterPage()
     {
         $response = $this->get('/register');
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
     }
 
     /** @test  */

@@ -38,26 +38,26 @@ class LoginAndRegisterTest extends TestCase
     }
 
 
-    /** @test */
-    public function guestCanRegister()
-    {
-        $registerData = ['name' => 'Tom Tester', 'email' => 'test@test.com', 'password' => 'password', 'password_confirmation' => 'password'];
-
-        $response = $this->post('/register', $registerData);
-
-        $response->assertStatus(302);
-        $response->assertLocation('/home');
-        $this->assertDatabaseHas('users', ['name' => 'Tom Tester', 'email' => 'test@test.com']);
-    }
-
-    /** @test */
-    public function guestCanNotRegisterWithInvalidCredentials()
-    {
-        $registerData = ['name' => 'Tom Tester', 'email' => 'test@test.com', 'password' => 'password', 'password_confirmation' => 'differentPassword'];
-
-        $response = $this->post('/register', $registerData);
-
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors();
-    }
+//    /** @test */
+//    public function guestCanRegister()
+//    {
+//        $registerData = ['name' => 'Tom Tester', 'email' => 'test@test.com', 'password' => 'password', 'password_confirmation' => 'password'];
+//
+//        $response = $this->post('/register', $registerData);
+//
+//        $response->assertStatus(302);
+//        $response->assertLocation('/home');
+//        $this->assertDatabaseHas('users', ['name' => 'Tom Tester', 'email' => 'test@test.com']);
+//    }
+//
+//    /** @test */
+//    public function guestCanNotRegisterWithInvalidCredentials()
+//    {
+//        $registerData = ['name' => 'Tom Tester', 'email' => 'test@test.com', 'password' => 'password', 'password_confirmation' => 'differentPassword'];
+//
+//        $response = $this->post('/register', $registerData);
+//
+//        $response->assertStatus(302);
+//        $response->assertSessionHasErrors();
+//    }
 }

@@ -15,8 +15,7 @@ class GuestPagesTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                     ->assertSee('Swift Grocery List')
-                    ->assertSee('Login')
-                    ->assertSee('Register');
+                    ->assertSee('Login');
         });
     }
 
@@ -29,24 +28,23 @@ class GuestPagesTest extends DuskTestCase
                     ->assertSee('E-Mail Address')
                     ->assertSee('Password')
                     ->assertSee('Login')
-                    ->assertSee('Forgot Your Password?')
-                    ->assertSee('Register');
+                    ->assertSee('Forgot Your Password?');
         });
     }
 
-    /** @test */
-    public function RegisterPage()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/register')
-                    ->assertSee('Swift Grocery List')
-                    ->assertSee('E-Mail Address')
-                    ->assertSee('Password')
-                    ->assertSee('Name')
-                    ->assertSee('Confirm Password')
-                    ->assertSee('Register');
-        });
-    }
+//    /** @test */
+//    public function RegisterPage()
+//    {
+//        $this->browse(function (Browser $browser) {
+//            $browser->visit('/register')
+//                    ->assertSee('Swift Grocery List')
+//                    ->assertSee('E-Mail Address')
+//                    ->assertSee('Password')
+//                    ->assertSee('Name')
+//                    ->assertSee('Confirm Password')
+//                    ->assertSee('Register');
+//        });
+//    }
 
     /** @test */
     public function GuestCanNotVisitAuthenticatedPages()

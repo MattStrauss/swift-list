@@ -158,7 +158,7 @@ class RecipeController extends Controller
             return response()->json($error, 422);
         }
 
-        session()->flash('status', ['type' => 'primary', 'message' => 'Recipe successfully deleted!'] );
+        session()->flash('status', ['type' => 'primary', 'message' => 'Recipe successfully deleted!']);
         $redirect =  ['redirect' => route('recipes.index')];
 
         return response()->json($redirect, 200);

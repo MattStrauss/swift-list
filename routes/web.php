@@ -25,4 +25,7 @@ Route::resource('recipes', 'RecipeController')->middleware('auth');
 
 Route::resource('shopping-lists', 'ShoppingListController')->middleware('auth');
 
+Route::get('/change-password', 'Auth\ChangePasswordController@index')->name('change-password')->middleware('auth');
+Route::put('/change-password','Auth\ChangePasswordController@update')->middleware('auth')->name('change-password.update')->middleware('auth');
+
 Route::resource('aisles', 'AisleController')->only(['index', 'store']);

@@ -6,9 +6,16 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ $shopping_list->name }}
-                        <button onclick="window.print()" type="button" class="btn btn-sm btn-outline-secondary float-right ml-2"> <i class="fas fa-print"></i> Print List</button>
-                        <a href="{{route('shopping-lists.edit', $shopping_list->id)}}" class="btn btn-sm btn-outline-secondary float-right ml-2"> <i class="fas fa-edit"></i> Edit List</a>
-                        <button @click="modalConfirmDeleteOpen = true" type="button" class="btn btn-sm btn-outline-danger float-right"> <i class="fas fa-trash-alt"></i> Delete List</button>
+
+                        <br class="d-block d-sm-none">
+
+                        <button onclick="window.print()" type="button" class="btn btn-sm btn-outline-secondary float-right ml-2 d-none d-sm-inline"> <i class="fas fa-print"></i> Print List</button>
+
+                        <a href="{{route('shopping-lists.edit', $shopping_list->id)}}" class="btn btn-sm btn-outline-secondary float-sm-right mr-4 mr-sm-0 ml-sm-2">
+                            <i class="fas fa-edit p-2 p-sm-0"></i> <span class="d-none d-sm-inline">Edit List</span></a>
+
+                        <button @click="modalConfirmDeleteOpen = true" type="button" class="btn btn-sm btn-outline-danger float-sm-right">
+                            <i class="fas fa-trash-alt p-2 p-sm-0"></i> <span class="d-none d-sm-inline">Delete List</span></button>
                     </div>
 
                     <div class="card-body">

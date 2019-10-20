@@ -1,7 +1,9 @@
 <template>
     <div>
     <div class="card-header">{{recipe.name}}
-        <a v-if="action !== 'Create'" :href="'/recipes/' + recipe.id" class="btn btn-sm btn-outline-secondary float-right"> <i class="fas fa-eye"></i> View Recipe</a>
+        <br class="d-block d-sm-none">
+        <a v-if="action !== 'Create'" :href="'/recipes/' + recipe.id" class="btn btn-sm btn-outline-secondary float-sm-right mr-4 mr-sm-2 ml-sm-2">
+            <i class="fas fa-eye p-2 p-sm-0"></i> <span class="d-none d-sm-inline">View Recipe</span></a>
     </div>
         <div v-if="success" class="alert alert-primary fade show" role="alert" style="margin:2%;">
             <strong>Recipe Updated!</strong> Your changes have been saved.

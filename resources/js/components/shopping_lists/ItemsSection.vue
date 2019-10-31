@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="clearfix">
         <h6> {{ (this.context !== 'recipe') ? 'Items' : 'Ingredients' }}
             <a @click="createOrEditItem()" data-toggle="tooltip" title="Add item" class="cursor-pointer">
                 <i class="fas fa-plus-circle text-secondary add-able-icon"></i>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="clearfix">
         <h6>Recipes</h6>
         <auto-complete :items="availableRecipes" :isAsync="false" :model="'recipe'" :placeHolder="'Search Recipes...'" @recipe-added="addRecipe"></auto-complete>
 

@@ -22,11 +22,11 @@
 
                         <recipes-section :available-recipes="this.availableRecipes" :initial-included-recipes="this.includedRecipes" @save-list="submit"></recipes-section>
 
-                    <div class="clearfix"></div> <br>
+                     <br>
 
                         <items-section :available-items="this.availableItems" :initial-included-items="this.includedItems" :aisles="this.aisles" :context="'shopping-list'" @save-list="submit"></items-section>
 
-                    <div class="clearfix"></div>
+
                     <hr>
 
                     <input type="hidden" name="item_id" value="" v-model="list.id">

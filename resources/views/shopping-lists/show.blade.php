@@ -20,10 +20,10 @@
 
                     <div class="card-body">
                         <h4> Recipes <small><small>({{ $shopping_list->recipes->count() }})</small></small></h4>
-                        <ul class="items recipe-items">
+                        <ul class="items recipe-items recipes-on-list">
                             @foreach($shopping_list->recipes as $recipe)
 
-                                <a href="/recipes/{{$recipe->id}}"><li class="item">{{$recipe->name}}</li></a>
+                                <a href="/recipes/{{$recipe->id}}"><li class="item selected-recipe-item">{{$recipe->name}}</li></a>
 
                             @endforeach
 
@@ -44,14 +44,14 @@
 
                                             @if ($loop->first)
 
-                                                <li class="list-group-item list-group-item-dark">{{ $item->aisle->name }}
+                                                <li class="list-group-item list-group-item-dark aisle-name">{{ $item->aisle->name }}
                                                     <span class="badge badge-light badge-primary badge-pill">{{ $loop->count}}</span>
                                                     <span class="print-only"><small>({{$loop->count}})</small></span>
                                                 </li>
 
                                             @endif
 
-                                                <li class="list-group-item">{{ $item->name }}</li>
+                                                <li class="list-group-item recipe-view-items-section">{{ $item->name }}</li>
 
                                         @endforeach
 

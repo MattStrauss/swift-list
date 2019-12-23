@@ -35,6 +35,17 @@
     -webkit-transition: color 0.2s;
 }
 
+.recipes-on-list {
+    width: 100%
+}
+
+.selected-recipe-item {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .item:hover {
     background-color: #3490dc;
     color: white;
@@ -54,6 +65,14 @@
     cursor: pointer;
 }
 
+.list-group-flush:last-child .list-group-item:last-child {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.list-group-flush .list-group-item.aisle-name {
+    border-top: 0 !important;
+}
+
 * > .fa.fa-hover-show,
 *:hover > .fa.fa-hover-hidden {
     display: none;
@@ -69,8 +88,8 @@
 
 
 @media print {
-    header, nav, footer, .btn, .badge {
-        display: none;
+    header, nav, footer, .btn, .badge, .no-print {
+        display: none !important;
     }
 
     div {

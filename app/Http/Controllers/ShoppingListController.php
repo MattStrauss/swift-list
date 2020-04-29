@@ -75,9 +75,9 @@ class ShoppingListController extends Controller
 
         $items = collect($request->input('items'))->pluck('id');
         $shopping_list->items()->sync($items);
-
         $recipes = collect($request->input('recipes'))->pluck('id');
-        $shopping_list->recipes()->sync($recipes);
+        $shopping_list->recipes()->detach();
+        $shopping_list->recipes()->attach($recipes);
 
         return response()->json($shopping_list, 200);
 
@@ -176,7 +176,9 @@ class ShoppingListController extends Controller
         $shopping_list->items()->sync($items);
 
         $recipes = collect($request->input('recipes'))->pluck('id');
-        $shopping_list->recipes()->sync($recipes);
+        // not using sync() since it will not allow duplicates of the same recipe
+        $shopping_list->recipes()->detach();
+        $shopping_list->recipes()->attach($recipes);
 
         return response()->json($shopping_list, 200);
     }
